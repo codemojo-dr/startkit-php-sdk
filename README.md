@@ -1,11 +1,13 @@
 Welcome to the CodeMojo SDK (Startup Development Toolkit)
 
-Using the SDK is straight forward and simple. The SDK consist of three main services
+Using the [SDK](https://github.com/codemojo-dr/php-sdk/archive/master.zip) is straight forward and simple. The SDK consist of four main services
 
 1. [Authentication Service](wiki/Authentication-Service)
 2. [Wallet Service](wiki/Wallet-Service)
 3. [Loyalty Service](wiki/Loyalty-Service)
 4. [Meta Tagging Service](wiki/Meta-Service) 
+
+Download the PHP SDK [here](https://github.com/codemojo-dr/php-sdk/archive/master.zip)
 
 ###Authentication Service###
 Authentication service is the basic requirement for all the other services. The constructor of this service takes in 2 parameters, `client id` and `client secret`
@@ -46,7 +48,7 @@ $loyaltyService = new LoyaltyService($authService);
 ```
 
 ###Meta Tagging Service###
-Meta Tagging service is a fully maintained high-performance key-value store as a service that lets you store meta information/object of any kind. The service scales as you grow, so now you can focus on what matters the most.
+Meta Tagging service is a fully managed high-performance key-value store as a service that lets you store meta information/object of any kind. The service scales as you grow, so now you can focus on what matters the most.
 
 **Dependency** [Authentication Service](wiki/Authentication-Service)
 

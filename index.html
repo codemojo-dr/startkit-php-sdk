@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Codemojo-php-sdk by codemojo-dr</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Codemojo-php-sdk</h1>
+        <p>CodeMojo PHP SDK</p>
+
+        <p class="view"><a href="https://github.com/codemojo-dr/codemojo-php-sdk">View the Project on GitHub <small>codemojo-dr/codemojo-php-sdk</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/codemojo-dr/codemojo-php-sdk/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/codemojo-dr/codemojo-php-sdk/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/codemojo-dr/codemojo-php-sdk">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About</h3>
+
+<p>Welcome to the CodeMojo SDK (Startup Development Toolkit). CodeMojo helps you to rapidly deploy application components as pluggable services for your PHP application allowing you to cut development time ramp up productivity.</p>
+
+<p>Using the <a href="https://github.com/codemojo-dr/php-sdk/archive/master.zip">SDK</a> is straight forward and simple. The SDK consist of four main services</p>
+
+<ol>
+<li><a href="wiki/Authentication-Service">Authentication Service</a></li>
+<li><a href="wiki/Wallet-Service">Wallet Service</a></li>
+<li><a href="wiki/Loyalty-Service">Loyalty Service</a></li>
+<li>
+<a href="wiki/Meta-Service">Meta Tagging Service</a> </li>
+</ol>
+
+<p>Download the PHP SDK <a href="https://github.com/codemojo-dr/php-sdk/archive/master.zip">here</a></p>
+
+<p>See the <a href="wiki">Wiki</a> for additional documentation</p>
+
+<p>See the <a href="https://github.com/codemojo-dr/codemojo-php-sdk/wiki/Dashboard">Dashboard walkthrough</a> for insights on how to use the dashboard</p>
+
+<h3>
+<a id="installation--usage" class="anchor" href="#installation--usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation &amp; Usage</h3>
+
+<p><strong>Stock/Vanilla PHP</strong></p>
+
+<p>Download the SDK and include the <code>autoload.php</code> to your source code</p>
+
+<p><strong>Composer</strong></p>
+
+<p>Simply add the following to your <code>composer.json</code></p>
+
+<div class="highlight highlight-source-json"><pre>{
+  <span class="pl-s"><span class="pl-pds">"</span>require<span class="pl-pds">"</span></span>: {
+    <span class="pl-s"><span class="pl-pds">"</span>codemojo/services<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>0.1.*<span class="pl-pds">"</span></span>
+  }
+}</pre></div>
+
+<h3>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h3>
+
+<p>Once you have enabled and configured the Loyalty module from your <a href="https://dashboard.codemojo.io">CodeMojo dashboard</a>, you can use it as simple as shown below</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-k">require_once</span> <span class="pl-s"><span class="pl-pds">'</span>../sdk/autoload.php<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">const</span> <span class="pl-c1">CLIENT_ID</span>     <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>sample@codemojo.io<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1"><span class="pl-k">const</span> <span class="pl-c1">CLIENT_SECRET</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>PLB6DHP7VcykRDdvloi2X9tEq3FvsIBhtdn7UdeQ<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// Create an instance of Authentication Service</span></span>
+<span class="pl-s1"><span class="pl-smi">$authService</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">AuthenticationService</span>(<span class="pl-c1">CLIENT_ID</span>, <span class="pl-c1">CLIENT_SECRET</span>, <span class="pl-c1">Endpoints</span><span class="pl-k">::</span><span class="pl-c1">LOCAL</span>, <span class="pl-k">function</span>(<span class="pl-smi">$type</span>, <span class="pl-smi">$message</span>){</span>
+<span class="pl-s1">    <span class="pl-k">switch</span>(<span class="pl-smi">$type</span>){</span>
+<span class="pl-s1">        <span class="pl-k">case</span> <span class="pl-c1">Exceptions</span><span class="pl-k">::</span><span class="pl-c1">AUTHENTICATION_EXCEPTION</span>:</span>
+<span class="pl-s1">            <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>Authentication Exception<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">            <span class="pl-k">break</span>;</span>
+<span class="pl-s1">        <span class="pl-k">case</span> <span class="pl-c1">Exceptions</span><span class="pl-k">::</span><span class="pl-c1">BALANCE_EXHAUSTED_EXCEPTION</span>:</span>
+<span class="pl-s1">            <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>Low balance<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">            <span class="pl-k">break</span>;</span>
+<span class="pl-s1">        <span class="pl-k">case</span> <span class="pl-c1">Exceptions</span><span class="pl-k">::</span><span class="pl-c1">FIELDS_MISSING_EXCEPTION</span>:</span>
+<span class="pl-s1">            <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>Fields missing<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">            <span class="pl-k">break</span>;</span>
+<span class="pl-s1">        <span class="pl-k">case</span> <span class="pl-c1">Exceptions</span><span class="pl-k">::</span><span class="pl-c1">QUOTA_EXCEPTION</span>:</span>
+<span class="pl-s1">            <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>Quota Exhausted Exception<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">            <span class="pl-k">break</span>;</span>
+<span class="pl-s1">        <span class="pl-k">case</span> <span class="pl-c1">Exceptions</span><span class="pl-k">::</span><span class="pl-c1">TOKEN_EXCEPTION</span>:</span>
+<span class="pl-s1">            <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>Invalid token Exception<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">            <span class="pl-k">break</span>;</span>
+<span class="pl-s1">        <span class="pl-k">default</span>:</span>
+<span class="pl-s1">            <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>Error <span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-smi">$message</span>;</span>
+<span class="pl-s1">            <span class="pl-k">break</span>;</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">});</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// Create an instance of Loyalty Service - If you have more than one wallet service,</span></span>
+<span class="pl-s1"><span class="pl-c">// you can optionally pass in the wallet instance as the second argument</span></span>
+<span class="pl-s1"><span class="pl-smi">$loyaltyService</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">LoyaltyService</span>(<span class="pl-smi">$authService</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// Credit points to user - You can have different set of rules based on the platform</span></span>
+<span class="pl-s1"><span class="pl-c">// For example, you can promote your android app by saying Get 5% more cashback when you transact through the Android app</span></span>
+<span class="pl-s1"><span class="pl-smi">$status</span> <span class="pl-k">=</span> <span class="pl-smi">$loyaltyService</span><span class="pl-k">-&gt;</span>addLoyaltyPoints(<span class="pl-s"><span class="pl-pds">"</span>user1@codemojo.io<span class="pl-pds">"</span></span>, <span class="pl-c1">1500</span>, <span class="pl-s"><span class="pl-pds">"</span>android<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-c1">7</span>, <span class="pl-s"><span class="pl-pds">"</span>Cashback for Order no. 1231<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// Get the balance in the wallet</span></span>
+<span class="pl-s1"><span class="pl-smi">$balance</span> <span class="pl-k">=</span> <span class="pl-smi">$loyaltyService</span><span class="pl-k">-&gt;</span>getBalance(<span class="pl-s"><span class="pl-pds">"</span>user1@codemojo.io<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// Check how much maximum can be redeemed by the user for the given (current) transaction value</span></span>
+<span class="pl-s1"><span class="pl-c">// Again, you can have different set of rules for redemption based on the platform</span></span>
+<span class="pl-s1"><span class="pl-smi">$maximumRedemption</span> <span class="pl-k">=</span> <span class="pl-smi">$loyaltyService</span><span class="pl-k">-&gt;</span>maximumRedemption(<span class="pl-s"><span class="pl-pds">"</span>user1@codemojo.io<span class="pl-pds">"</span></span>,<span class="pl-c1">8500</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// Redeem amount</span></span>
+<span class="pl-s1"><span class="pl-c">// (user_id, redemption_amount, current_transaction_value, platform)</span></span>
+<span class="pl-s1"><span class="pl-smi">$loyaltyService</span><span class="pl-k">-&gt;</span>redeem(<span class="pl-s"><span class="pl-pds">"</span>user1@codemojo.io<span class="pl-pds">"</span></span>, <span class="pl-c1">500</span>, <span class="pl-c1">8500</span>, <span class="pl-s"><span class="pl-pds">"</span>android<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"></span></pre></div>
+
+<p>For more details on the methods &amp; parameters available for each service, take a look at the individual service pages.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/codemojo-dr">codemojo-dr</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

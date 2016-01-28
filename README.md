@@ -1,6 +1,6 @@
 ### About
 
-Welcome to the CodeMojo SDK (Startup Development Toolkit)
+Welcome to the CodeMojo SDK (Startup Development Toolkit). CodeMojo helps you to rapidly deploy application components as pluggable services for your PHP application allowing you to cut development time ramp up productivity.
 
 Using the [SDK](https://github.com/codemojo-dr/php-sdk/archive/master.zip) is straight forward and simple. The SDK consist of four main services
 
@@ -12,6 +12,8 @@ Using the [SDK](https://github.com/codemojo-dr/php-sdk/archive/master.zip) is st
 Download the PHP SDK [here](https://github.com/codemojo-dr/php-sdk/archive/master.zip)
 
 See the [Wiki](wiki) for additional documentation
+
+See the [Dashboard walkthrough](https://github.com/codemojo-dr/codemojo-php-sdk/wiki/Dashboard) for insights on how to use the dashboard
 
 ### Installation & Usage
 

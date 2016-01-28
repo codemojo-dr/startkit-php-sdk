@@ -1,3 +1,5 @@
+### About
+
 Welcome to the CodeMojo SDK (Startup Development Toolkit)
 
 Using the [SDK](https://github.com/codemojo-dr/php-sdk/archive/master.zip) is straight forward and simple. The SDK consist of four main services
@@ -9,72 +11,28 @@ Using the [SDK](https://github.com/codemojo-dr/php-sdk/archive/master.zip) is st
 
 Download the PHP SDK [here](https://github.com/codemojo-dr/php-sdk/archive/master.zip)
 
-###Authentication Service###
-Authentication service is the basic requirement for all the other services. The constructor of this service takes in 2 parameters, `client id` and `client secret`
+See the [Wiki](wiki) for additional documentation
 
-**Dependency** None
+### Installation & Usage
 
-**Usage**
+**Stock/Vanilla PHP**
 
-```php
-use DRewards\Client\Services\AuthenticationService;
+Download the SDK and include the `autoload.php` to your source code
 
-$authService = new AuthenticationService(CLIENT_ID, CLIENT_SECRET);
-```
-###Wallet Service###
-You can use wallet service to work on a raw level transactions of crediting and debiting to user accounts
+**Composer**
 
-**Dependency** [Authentication Service](wiki/Authentication-Service)
+Simply add the following to your `composer.json`
 
-**Usage**
-
-```php
-use DRewards\Client\Services\WalletService;
-
-$walletService = new WalletService($authService);
+```json
+{
+  "require": {
+    "codemojo/services": "0.1.*"
+  }
+}
 ```
 
-###Loyalty Service###
-Loyalty service adds logical layer to the wallet service which makes sense to manipulate rewards based on different criteria
-
-**Dependency** [Authentication Service](wiki/Authentication-Service), [Wallet Service](wiki/Wallet-Service)
-
-**Usage**
-
-```php
-use DRewards\Client\Services\LoyaltyService;
-
-$loyaltyService = new LoyaltyService($authService);
-```
-
-###Meta Tagging Service###
-Meta Tagging service is a fully managed high-performance key-value store as a service that lets you store meta information/object of any kind. The service scales as you grow, so now you can focus on what matters the most.
-
-**Dependency** [Authentication Service](wiki/Authentication-Service)
-
-**Usage** 
-
-```php
-$metaService = new MetaService($authService);
-
-$data = ['id'=>1, 'action_id'=>2032, 'stamp'=> time(), 'session'=>'asklj2h91298899003' ];
-
-$metaService->add("item1", json_encode($data));
-
-$previousSession = $metaService->get("item2");
-
-// The service automagically unwraps json/serialized strings to objects
-// Now you can focus on what matters the most
-$cartPending = $previousSession->cart_pending;
-
-echo 'You have ' . $cartPending . ' items pending from your previous visit!';
-
-// Delete a meta
-$metaService->delete("item2");
-
-```
-### Example usage of Loyalty ###
-Once you have enabled and configured the Loyalty module from your CodeMojo dashboard, you can use it as simple as shown below
+### Example
+Once you have enabled and configured the Loyalty module from your [CodeMojo dashboard](https://dashboard.codemojo.io), you can use it as simple as shown below
 
 ```php    
 require_once '../sdk/autoload.php';
@@ -83,7 +41,28 @@ const CLIENT_ID     = 'sample@codemojo.io';
 const CLIENT_SECRET = 'PLB6DHP7VcykRDdvloi2X9tEq3FvsIBhtdn7UdeQ';
 
 // Create an instance of Authentication Service
-$authService = new AuthenticationService(CLIENT_ID, CLIENT_SECRET, Endpoints::SANDBOX);
+$authService = new AuthenticationService(CLIENT_ID, CLIENT_SECRET, Endpoints::LOCAL, function($type, $message){
+    switch($type){
+        case Exceptions::AUTHENTICATION_EXCEPTION:
+            echo 'Authentication Exception';
+            break;
+        case Exceptions::BALANCE_EXHAUSTED_EXCEPTION:
+            echo 'Low balance';
+            break;
+        case Exceptions::FIELDS_MISSING_EXCEPTION:
+            echo 'Fields missing';
+            break;
+        case Exceptions::QUOTA_EXCEPTION:
+            echo 'Quota Exhausted Exception';
+            break;
+        case Exceptions::TOKEN_EXCEPTION:
+            echo 'Invalid token Exception';
+            break;
+        default:
+            echo 'Error ' . $message;
+            break;
+    }
+});
 
 // Create an instance of Loyalty Service - If you have more than one wallet service,
 // you can optionally pass in the wallet instance as the second argument

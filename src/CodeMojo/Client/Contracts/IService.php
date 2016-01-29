@@ -30,4 +30,15 @@ interface IService
      */
     function onFieldsMissing($error_info);
 
+    /**
+     * @return mixed
+     */
+    function onInvalidData($error_info);
+
+    /**
+     * @param $error_info
+     * @return mixed
+     */
+    public function onError($error_info);
+
 }

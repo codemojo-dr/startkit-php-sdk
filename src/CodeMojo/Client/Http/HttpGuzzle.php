@@ -273,6 +273,11 @@ class HttpGuzzle
                     return $this->callback->onQuotaExceeded();
                 case -403:
                     return $this->callback->onFieldsMissing($json_decode["results"]);
+                case -405:
+                    return $this->callback->onInvalidData($json_decode["results"]);
+            }
+            if($json_decode['code'] >= 400 || $json_decode['code'] < 0){
+                return $this->callback->onError(@$json_decode['results']);
             }
         }
         curl_close($ch);

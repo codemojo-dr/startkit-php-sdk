@@ -63,7 +63,7 @@ class AuthenticationService extends BaseService
         $this->client_secret = $client_secret;
         $this->storage = new PersistentStorage();
         $this->setEnvironment($environment);
-        if($this->storage->accessTokenMightHaveExpired()) {
+        if($this->storage->accessTokenMightHaveExpired($client_id, $client_secret)) {
             $this->reauthenticate();
         }
         $this->transport = new HttpGuzzle($this->storage->getAccessToken(), $this);
@@ -76,7 +76,7 @@ class AuthenticationService extends BaseService
      * @internal
      */
     public function getTransport(){
-        if($this->storage->accessTokenMightHaveExpired()){
+        if($this->storage->accessTokenMightHaveExpired($this->client_id, $this->client_secret)){
             $this->reauthenticate();
         }
         return $this->transport;
@@ -89,7 +89,7 @@ class AuthenticationService extends BaseService
     public function onQuotaExceeded()
     {
         if($this->callback) {
-            call_user_func($this->qCallback,0x06);
+            call_user_func_array($this->callback,array(0x06,"api request quota exceeded"));
             return;
         }
         if($this->environment != Endpoints::PRODUCTION) {
@@ -108,8 +108,8 @@ class AuthenticationService extends BaseService
         if(!$this->reauthenticate()) {
 
             // Invoke the callback for user to handle
-            if ($this->tCallback) {
-                call_user_func($this->callback, 0x05);
+            if ($this->callback) {
+                call_user_func_array($this->callback, array(0x05, 'token validation failed'));
                 return;
             }
 
@@ -127,12 +127,34 @@ class AuthenticationService extends BaseService
      */
     public function onAuthenticationFailure()
     {
-        if($this->aCallback){
-            call_user_func($this->callback, 0x07);
+        if($this->callback){
+            call_user_func_array($this->callback, array(0x07,'error in authentication'));
             return;
         }
         if($this->environment != Endpoints::PRODUCTION) {
             parent::onAuthenticationFailure();
+        }
+    }
+
+    public function onInvalidData($error_info)
+    {
+        if($this->callback){
+            call_user_func_array($this->callback, array(0x11, $error_info));
+            return;
+        }
+        if($this->environment != Endpoints::PRODUCTION) {
+            parent::onInvalidData($error_info);
+        }
+    }
+
+    public function onError($error_info)
+    {
+        if($this->callback){
+            call_user_func_array($this->callback, array(0x12, $error_info));
+            return;
+        }
+        if($this->environment != Endpoints::PRODUCTION) {
+            parent::onInvalidData($error_info);
         }
     }
 
@@ -142,12 +164,13 @@ class AuthenticationService extends BaseService
      * @return bool
      * @throws Exception
      */
-    private function reauthenticate(){
+    private function reauthenticate()
+    {
         $client = new \CodeMojo\OAuth2\Client($this->client_id, $this->client_secret);
         $result = $client->getAccessToken($this->getServerEndPoint() . Endpoints::ACCESS_TOKEN,'client_credentials',array());
         if($result['code'] == 200) {
             if (isset($result['result']['access_token'])) {
-                $this->storage->storeAccessToken($result['result']['access_token'], $result['result']['expires_in']);
+                $this->storage->storeAccessToken($this->client_id, $this->client_secret, $result['result']['access_token'], $result['result']['expires_in']);
                 $this->transport = new HttpGuzzle($this->storage->getAccessToken(), $this);
                 return true;
             }

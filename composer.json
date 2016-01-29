@@ -1,0 +1,41 @@
+{
+    "name": "codemojo/startkit",
+    "description": "Pluggable components as service for your PHP application",
+    "keywords": ["drewards","codemojo","loyalty","wallet"],
+    "license": "GNU",
+    "homepage": "https://github.com/codemojo-dr/codemojo-php-sdk",
+    "support": {
+        "issues": "https://github.com/codemojo-dr/codemojo-php-sdk/issues",
+        "source": "https://github.com/codemojo-dr/codemojo-php-sdk"
+    },
+    "authors": [
+        {
+            "name": "Shoaib A",
+            "email": "shoaib@codemojo.io",
+            "homepage": "http://codemojo.io",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Monolog": "src"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+
+}
+

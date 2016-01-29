@@ -29,8 +29,7 @@ abstract class BaseConnector
      * @internal
      */
     public function getServerEndPoint(){
-        return $this->environment == Endpoints::PRODUCTION ?
-            Endpoints::ENDPOINT_PRODUCTION : ($this->environment == Endpoints::SANDBOX ? Endpoints::ENDPOINT_SANDBOX : Endpoints::LOCAL);
+        return $this->environment == Endpoints::PRODUCTION ? Endpoints::ENDPOINT_PRODUCTION : ($this->environment == Endpoints::SANDBOX ? Endpoints::ENDPOINT_SANDBOX : Endpoints::ENDPOINT_LOCAL);
     }
 
 }

@@ -13,7 +13,7 @@ Download the PHP SDK [here](https://github.com/codemojo-dr/php-sdk/archive/maste
 
 See the [Wiki](wiki) for additional documentation
 
-See the [Dashboard walkthrough](https://github.com/codemojo-dr/codemojo-php-sdk/wiki/Dashboard) for insights on how to use the dashboard
+See the [Dashboard walkthrough](wiki/Dashboard) for insights on how to use the dashboard
 
 ### Installation & Usage
 
@@ -28,13 +28,13 @@ Simply add the following to your `composer.json`
 ```json
 {
   "require": {
-    "codemojo/services": "0.1.*"
+    "codemojo/startkit": "0.1.*"
   }
 }
 ```
 
 ### Example
-Once you have enabled and configured the Loyalty module from your [CodeMojo dashboard](https://dashboard.codemojo.io), you can use it as simple as shown below
+Once you have enabled and configured the Loyalty module from your [CodeMojo dashboard](https://dashboard.codemojo.io), you can use it as simple as shown below. More documentation on [dashboard](wiki/Dashboard).
 
 ```php    
 require_once '../sdk/autoload.php';

@@ -20,13 +20,8 @@
         "php": ">=5.2.0"
     },
     "autoload": {
-        "psr-0": {
-            "Monolog": "src"
-        }
-    },
-    "autoload": {
         "psr-4": {
-            "\\": "src/"
+            "CodeMojo\\": "src/CodeMojo/"
         }
     },
     "extra": {

@@ -4,14 +4,14 @@ Welcome to the CodeMojo SDK (Startup Development Toolkit). CodeMojo helps you to
 
 Using the [SDK](https://github.com/codemojo-dr/php-sdk/archive/master.zip) is straight forward and simple. The SDK consist of four main services
 
-1. [Authentication Service](wiki/Authentication-Service)
-2. [Wallet Service](wiki/Wallet-Service)
-3. [Loyalty Service](wiki/Loyalty-Service)
-4. [Meta Tagging Service](wiki/Meta-Service) 
+1. [Authentication Service](/wiki/Authentication-Service)
+2. [Wallet Service](/wiki/Wallet-Service)
+3. [Loyalty Service](/wiki/Loyalty-Service)
+4. [Meta Tagging Service](/wiki/Meta-Service) 
 
 Download the PHP SDK [here](https://github.com/codemojo-dr/php-sdk/archive/master.zip)
 
-See the [Wiki](wiki) for additional documentation
+See the [Wiki](/wiki) for additional documentation
 
 See the [Dashboard walkthrough](wiki/Dashboard) for insights on how to use the dashboard
 

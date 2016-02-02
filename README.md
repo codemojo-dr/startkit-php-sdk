@@ -4,16 +4,16 @@ Welcome to the CodeMojo SDK (Startup Development Toolkit). CodeMojo helps you to
 
 Using the [SDK](https://github.com/codemojo-dr/php-sdk/archive/master.zip) is straight forward and simple. The SDK consist of four main services
 
-1. [Authentication Service](/wiki/Authentication-Service)
-2. [Wallet Service](/wiki/Wallet-Service)
-3. [Loyalty Service](/wiki/Loyalty-Service)
-4. [Meta Tagging Service](/wiki/Meta-Service) 
+1. [Authentication Service](https://github.com/codemojo-dr/startkit-php-sdk/wiki/Authentication-Service)
+2. [Wallet Service](https://github.com/codemojo-dr/startkit-php-sdk/wiki/Wallet-Service)
+3. [Loyalty Service](https://github.com/codemojo-dr/startkit-php-sdk/wiki/Loyalty-Service)
+4. [Meta Tagging Service](https://github.com/codemojo-dr/startkit-php-sdk/wiki/Meta-Service) 
 
 Download the PHP SDK [here](https://github.com/codemojo-dr/php-sdk/archive/master.zip)
 
-See the [Wiki](/wiki) for additional documentation
+See the [Wiki](https://github.com/codemojo-dr/startkit-php-sdk/wiki) for additional documentation
 
-See the [Dashboard walkthrough](wiki/Dashboard) for insights on how to use the dashboard
+See the [Dashboard walkthrough](https://github.com/codemojo-dr/startkit-php-sdk/wiki/Dashboard) for insights on how to use the dashboard
 
 ### Installation & Usage
 
@@ -34,7 +34,7 @@ Simply add the following to your `composer.json`
 ```
 
 ### Example
-Once you have enabled and configured the Loyalty module from your [CodeMojo dashboard](https://dashboard.codemojo.io), you can use it as simple as shown below. More documentation on [dashboard](wiki/Dashboard).
+Once you have enabled and configured the Loyalty module from your [CodeMojo dashboard](https://dashboard.codemojo.io), you can use it as simple as shown below. More documentation on [dashboard](https://github.com/codemojo-dr/startkit-php-sdk/wiki/Dashboard).
 
 ```php    
 require_once '../sdk/autoload.php';

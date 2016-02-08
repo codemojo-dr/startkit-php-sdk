@@ -267,6 +267,8 @@ class HttpGuzzle
         } else {
             $json_decode = json_decode($result, true);
             switch($json_decode['code']){
+                case -500:
+                    return $this->callback->onAuthenticationFailure();
                 case -400:
                     return $this->callback->onTokenFailure();
                 case -100:

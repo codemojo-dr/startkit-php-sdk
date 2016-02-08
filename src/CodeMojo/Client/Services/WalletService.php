@@ -154,7 +154,7 @@ class WalletService {
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'DELETE',array(),0);
 
-        if($result["code"] == -3){
+        if($result["code"] == 3){
             throw new BalanceExhaustedException("Not enough balance", 0x08);
             return false;
         }

@@ -33,6 +33,13 @@ class LoyaltyService
     }
 
     /**
+     * @return WalletService|null
+     */
+    public function getWalletService(){
+        return $this->walletService;
+    }
+
+    /**
      * Add loyalty points to users wallet
      * @param $user_id
      * @param $transaction_value
@@ -46,6 +53,27 @@ class LoyaltyService
      * @throws \CodeMojo\OAuth2\Exception
      */
     public function addLoyaltyPoints($user_id, $transaction_value, $platform = null, $expires_in_days = null, $transaction_id = null, $meta = null, $frozen = false){
+        $result = $this->calculateLoyaltyPoints($user_id, $transaction_value, $platform, $expires_in_days, $transaction_id, $meta, $frozen);
+        if(!empty($result)) {
+            return $this->walletService->addBalance($user_id, $result['award'], @$result['expires_in_days'],
+                $transaction_id ? $transaction_id : 'loyalty_' . $result['id'] . '_' . time(), $meta, "Loyalty points credited", $frozen);
+        }
+        return false;
+    }
+
+    /**
+     * @param $user_id
+     * @param $transaction_value
+     * @param null $platform
+     * @param null $expires_in_days
+     * @param null $transaction_id
+     * @param null $meta
+     * @param bool|false $frozen
+     * @return array
+     * @throws \CodeMojo\Client\Http\InvalidArgumentException
+     * @throws \CodeMojo\OAuth2\Exception
+     */
+    public function calculateLoyaltyPoints($user_id, $transaction_value, $platform = null, $expires_in_days = null, $transaction_id = null, $meta = null, $frozen = false){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::LOYALTY_CALCULATE;
 
         $params = array(
@@ -53,13 +81,13 @@ class LoyaltyService
             "expiry" => $expires_in_days, "platform" => $platform
         );
 
-        $result = $this->authenticationService->getTransport()->fetch($url, $params,'PUT', array(), 0);
+        $result = $this->authenticationService->getTransport()->fetch($url, $params,'GET', array(), 0);
 
         if($result['code'] == 200) {
-            return $this->walletService->addBalance($user_id, $result['results']['award'], @$result['results']['expires_in_days'],
-                $transaction_id ? $transaction_id : 'loyalty_' . $result['results']['id'] . '_' . time(), $meta, "Loyalty points credited", $frozen);
+            return $result['results'];
+        }else{
+            return null;
         }
-        return false;
     }
 
 
@@ -87,6 +115,16 @@ class LoyaltyService
         }
     }
 
+    public function getUserBrief($user_id){
+        $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::LOYALTY_SUMMARY;
+        $url = sprintf($url, $user_id);
+
+        $result = $this->authenticationService->getTransport()->fetch($url);
+
+        $result['results']['balance'] = $this->walletService->getBalance($user_id);
+
+        return $result['results'];
+    }
 
     /**
      * @param $user_id

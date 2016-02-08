@@ -42,6 +42,7 @@ class Endpoints
      */
     const BASE_LOYALTY = "/services/loyalty";
     const LOYALTY_CALCULATE = "";
+    const LOYALTY_SUMMARY = "/summary/%s";
     const REDEMPTION_CALCULATE = "/calculate-redemption";
 
     /*

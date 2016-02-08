@@ -36,7 +36,7 @@ class PersistentStorage {
     public function storeAccessToken($id, $secret, $token, $expiry){
         $this->data['oauth2_access_token'] = $token;
         $this->data['oauth2_expiry'] = time() + $expiry;
-        $this->data['affinity'] = sha1($id . $secret);
+        $this->data['affinity'] = sha1($id . $secret . $token . $this->data['oauth2_expiry']);
         return file_put_contents($this->path, base64_encode(json_encode($this->data)));
     }
 
@@ -56,8 +56,9 @@ class PersistentStorage {
      * @return bool
      */
     public function accessTokenMightHaveExpired($id, $secret){
-        return (!isset($this->data['oauth2_expiry']) || (time() > $this->data['oauth2_expiry'])) ||
-        (!isset($this->data['affinity']) || sha1($id . $secret) != $this->data['affinity']);
+        return !isset($this->data['oauth2_expiry']) || time() > $this->data['oauth2_expiry'] ||
+        !isset($this->data['affinity']) || sha1($id . $secret . $this->data['oauth2_access_token'] . $this->data['oauth2_expiry'])
+        != $this->data['affinity'];
     }
 
 

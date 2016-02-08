@@ -91,8 +91,7 @@ class AuthenticationService extends BaseService
         if($this->callback) {
             call_user_func_array($this->callback,array(0x06,"api request quota exceeded"));
             return;
-        }
-        if($this->environment != Endpoints::PRODUCTION) {
+        }elseif($this->environment == Endpoints::LOCAL) {
             parent::onQuotaExceeded();
         }
     }
@@ -111,10 +110,7 @@ class AuthenticationService extends BaseService
             if ($this->callback) {
                 call_user_func_array($this->callback, array(0x05, 'token validation failed'));
                 return;
-            }
-
-            // If its not handled properly
-            if($this->environment != Endpoints::PRODUCTION) {
+            }elseif($this->environment == Endpoints::LOCAL) {
                 parent::onTokenFailure();
             }
 
@@ -130,8 +126,7 @@ class AuthenticationService extends BaseService
         if($this->callback){
             call_user_func_array($this->callback, array(0x07,'error in authentication'));
             return;
-        }
-        if($this->environment != Endpoints::PRODUCTION) {
+        }elseif($this->environment == Endpoints::LOCAL) {
             parent::onAuthenticationFailure();
         }
     }
@@ -141,8 +136,7 @@ class AuthenticationService extends BaseService
         if($this->callback){
             call_user_func_array($this->callback, array(0x11, $error_info));
             return;
-        }
-        if($this->environment != Endpoints::PRODUCTION) {
+        }elseif($this->environment == Endpoints::LOCAL) {
             parent::onInvalidData($error_info);
         }
     }
@@ -152,8 +146,7 @@ class AuthenticationService extends BaseService
         if($this->callback){
             call_user_func_array($this->callback, array(0x12, $error_info));
             return;
-        }
-        if($this->environment != Endpoints::PRODUCTION) {
+        }elseif($this->environment == Endpoints::LOCAL) {
             parent::onInvalidData($error_info);
         }
     }
@@ -175,9 +168,7 @@ class AuthenticationService extends BaseService
                 return true;
             }
         }else{
-            if($this->environment != Endpoints::PRODUCTION) {
-                $this->onAuthenticationFailure();
-            }
+            $this->onAuthenticationFailure();
         }
         return false;
     }

@@ -11,6 +11,8 @@ Using the [SDK](https://github.com/codemojo-dr/php-sdk/archive/master.zip) is st
 
 Download the PHP SDK [here](https://github.com/codemojo-dr/php-sdk/archive/master.zip)
 
+Download the **Sample Application** [here](https://github.com/codemojo-dr/startkit-php-sample/archive/master.zip)
+
 See the [Wiki](https://github.com/codemojo-dr/startkit-php-sdk/wiki) for additional documentation
 
 See the [Dashboard walkthrough](https://github.com/codemojo-dr/startkit-php-sdk/wiki/Dashboard) for insights on how to use the dashboard

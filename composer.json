@@ -24,12 +24,7 @@
             "CodeMojo\\": "src/CodeMojo/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.1-dev"
-        }
-    },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 
 }

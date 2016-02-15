@@ -209,12 +209,8 @@ class WalletService {
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      * @throws \CodeMojo\OAuth2\Exception
      */
-    public function addBalance($user_id, $value_to_add, $expires_in_days = null, $transaction_id = null, $meta_data = null, $tag = null, $frozen = false){
+    public function addBalance($user_id, $value_to_add, $expires_in_days = 0, $transaction_id = null, $meta_data = null, $tag = null, $frozen = false){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_WALLET . Endpoints::WALLET_CREDITS;
-
-        if($expires_in_days){
-            $expires_in_days = time() + ($expires_in_days * 86400);
-        }
 
         $params = array(
             'customer_id' => $user_id, 'value'=>$value_to_add,

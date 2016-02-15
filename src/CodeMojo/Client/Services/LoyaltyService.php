@@ -73,7 +73,7 @@ class LoyaltyService
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      * @throws \CodeMojo\OAuth2\Exception
      */
-    public function calculateLoyaltyPoints($user_id, $transaction_value, $platform = null, $expires_in_days = null, $transaction_id = null, $meta = null, $frozen = false){
+    public function calculateLoyaltyPoints($user_id, $transaction_value, $platform = null, $expires_in_days = 0, $transaction_id = null, $meta = null, $frozen = false){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::LOYALTY_CALCULATE;
 
         $params = array(

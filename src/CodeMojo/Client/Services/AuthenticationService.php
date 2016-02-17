@@ -62,6 +62,7 @@ class AuthenticationService extends BaseService
         $this->client_id = $client_id;
         $this->client_secret = $client_secret;
         $this->storage = new PersistentStorage();
+        if(empty($environment)){$environment = Endpoints::SANDBOX;}
         $this->setEnvironment($environment);
         if($this->storage->accessTokenMightHaveExpired($client_id, $client_secret)) {
             $this->reauthenticate();

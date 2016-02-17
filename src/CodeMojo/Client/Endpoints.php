@@ -15,8 +15,8 @@ class Endpoints
     const PRODUCTION = 2;
     const LOCAL = 3;
 
-    const ENDPOINT_PRODUCTION = "https://production.codemojo.io";
-    const ENDPOINT_SANDBOX = "http://sandbox.codemojo.io";
+    const ENDPOINT_PRODUCTION = "https://api.codemojo.io";
+    const ENDPOINT_SANDBOX = "https://sandbox.codemojo.io";
     const ENDPOINT_LOCAL = "http://lh-drewards-services:8888";
 
     const VERSION = "/v1";

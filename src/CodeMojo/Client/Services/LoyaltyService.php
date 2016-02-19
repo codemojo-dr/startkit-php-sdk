@@ -53,8 +53,17 @@ class LoyaltyService
      * @throws \CodeMojo\OAuth2\Exception
      */
     public function addLoyaltyPoints($user_id, $transaction_value, $platform = null, $expires_in_days = null, $transaction_id = null, $meta = null, $frozen = false){
-        $result = $this->calculateLoyaltyPoints($user_id, $transaction_value, $platform, $expires_in_days, $transaction_id, $meta, $frozen);
-        if(!empty($result)) {
+        $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::LOYALTY_CALCULATE;
+
+        $params = array(
+            "customer_id" => $user_id, "value" => $transaction_value,
+            "expiry" => $expires_in_days, "platform" => $platform
+        );
+
+        $result = $this->authenticationService->getTransport()->fetch($url, $params,'PUT', array(), 0);
+
+        if($result['code'] == 200 && !empty($result['results'])) {
+            $result = $result['results'];
             return $this->walletService->addBalance($user_id, $result['award'], @$result['expires_in_days'],
                 $transaction_id ? $transaction_id : 'loyalty_' . $result['id'] . '_' . time(), $meta, "Loyalty points credited", $frozen);
         }

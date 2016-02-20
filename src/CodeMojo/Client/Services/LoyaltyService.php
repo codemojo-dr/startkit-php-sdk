@@ -112,7 +112,7 @@ class LoyaltyService
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::REDEMPTION_CALCULATE;
 
         $params = array(
-            "customer_id" => $user_id, "value" => $transaction_value, "platform" => $platform
+            "customer_id" => $user_id, "transaction" => $transaction_value, "platform" => $platform
         );
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'GET');
@@ -147,13 +147,13 @@ class LoyaltyService
      * @throws \CodeMojo\OAuth2\Exception
      */
     public function redeem($user_id, $redemption_value, $transaction_value, $platform = null, $meta = null){
-        $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::REDEMPTION_CALCULATE;
+        $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY;
 
         $params = array(
-            "customer_id" => $user_id, "value" => $transaction_value, "platform" => $platform
+            "customer_id" => $user_id, "value" => $redemption_value, "platform" => $platform, "transaction" => $transaction_value
         );
 
-        $result = $this->authenticationService->getTransport()->fetch($url,$params,'GET');
+        $result = $this->authenticationService->getTransport()->fetch($url,$params,'DELETE',array(),0);
 
         if(isset($result['code']) && $result['code'] == 200) {
             $value = $result['results'];

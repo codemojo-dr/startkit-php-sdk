@@ -104,4 +104,28 @@ class PaginatedResults implements IPaginator
     {
         return empty($this->resultSet['prev_page_url']);
     }
+
+    /**
+     * @return mixed
+     */
+    function totalPages()
+    {
+        return $this->resultSet['last_page'];
+    }
+
+    /**
+     * @return mixed
+     */
+    function totalResultsPerPage()
+    {
+        return $this->resultSet['per_page'];
+    }
+
+    /**
+     * @return mixed
+     */
+    function currentPage()
+    {
+        return $this->resultSet['current_page'];
+    }
 }

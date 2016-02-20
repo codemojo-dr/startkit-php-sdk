@@ -35,4 +35,19 @@ interface IPaginator
      */
     function hasReachedBeginningOfPage();
 
+    /**
+     * @return mixed
+     */
+    function totalPages();
+
+    /**
+     * @return mixed
+     */
+    function totalResultsPerPage();
+
+    /**
+     * @return mixed
+     */
+    function currentPage();
+
 }

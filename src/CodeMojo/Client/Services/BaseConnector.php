@@ -15,7 +15,7 @@ abstract class BaseConnector
     /**
      * @var
      */
-    protected $environment = Endpoints::SANDBOX;
+    protected $environment = Endpoints::ENV_SANDBOX;
 
     /**
      * @param int $env
@@ -29,7 +29,7 @@ abstract class BaseConnector
      * @internal
      */
     public function getServerEndPoint(){
-        return $this->environment == Endpoints::PRODUCTION ? Endpoints::ENDPOINT_PRODUCTION : ($this->environment == Endpoints::SANDBOX ? Endpoints::ENDPOINT_SANDBOX : Endpoints::ENDPOINT_LOCAL);
+        return $this->environment == Endpoints::ENV_PRODUCTION ? Endpoints::URL_PRODUCTION : ($this->environment == Endpoints::ENV_SANDBOX ? Endpoints::URL_SANDBOX : Endpoints::URL_LOCAL);
     }
 
 }

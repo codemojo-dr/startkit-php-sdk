@@ -81,15 +81,17 @@ class WalletService {
      * @param $user_id
      * @param int $count
      * @param null $paginated_url
+     * @param int $page
      * @return PaginatedResults
-     * @throws \CodeMojo\Client\Http\Exception
+     * @throws Exception
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      */
-    public function getTransactionDetailsForUser($user_id, $count = 10, $paginated_url = null){
+    public function getTransactionDetailsForUser($user_id, $count = 10, $paginated_url = null, $page = 1){
         if($paginated_url) {
             $url = $paginated_url;
         }else {
-            $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_WALLET . Endpoints::WALLET_TRANSACTIONS_USER;
+            $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_WALLET
+                . Endpoints::WALLET_TRANSACTIONS_USER . ($paginated_url ? '' : '?page=' . (int) $page);
             $url = sprintf($url, $user_id, $count);
         }
 
@@ -100,7 +102,7 @@ class WalletService {
             $paginatedResult = new PaginatedResults($result['results'],array($this,'getTransactionDetailsForUser'),array($user_id,$count));
             return $paginatedResult;
         }else{
-            return new PaginatedResults(null,null,null);
+            return new PaginatedResults(array(),null,null);
         }
 
     }
@@ -109,15 +111,17 @@ class WalletService {
      * Get all transactions from all the users
      * @param int $count
      * @param null $paginated_url
+     * @param int $page
      * @return PaginatedResults
-     * @throws \CodeMojo\Client\Http\Exception
+     * @throws Exception
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      */
-    public function getAllTransactions($count = 10, $paginated_url = null){
+    public function getAllTransactions($count = 10, $paginated_url = null, $page = 1){
         if($paginated_url) {
             $url = $paginated_url;
         }else{
-            $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_WALLET . Endpoints::WALLET_TRANSACTIONS_ALL;
+            $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_WALLET
+                . Endpoints::WALLET_TRANSACTIONS_ALL . ($paginated_url ? '' : '?page=' . (int) $page);
             $url = sprintf($url, $count);
         }
 
@@ -128,7 +132,7 @@ class WalletService {
             $paginatedResult = new PaginatedResults($result['results'],array($this,'getAllTransactions'),array($count));
             return $paginatedResult;
         }else{
-            return new PaginatedResults(null,null,null);
+            return new PaginatedResults(array(),null,null);
         }
     }
 

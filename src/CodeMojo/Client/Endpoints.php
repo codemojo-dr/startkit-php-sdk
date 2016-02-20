@@ -11,13 +11,13 @@ class Endpoints
 {
     const API_VERSION = 1.0;
 
-    const SANDBOX = 1;
-    const PRODUCTION = 2;
-    const LOCAL = 3;
+    const ENV_SANDBOX = 1;
+    const ENV_PRODUCTION = 2;
+    const ENV_LOCAL = 3;
 
-    const ENDPOINT_PRODUCTION = "https://api.codemojo.io";
-    const ENDPOINT_SANDBOX = "https://sandbox.codemojo.io";
-    const ENDPOINT_LOCAL = "http://lh-drewards-services:8888";
+    const URL_PRODUCTION = "https://production.codemojo.io";
+    const URL_SANDBOX = "https://sandbox.codemojo.io";
+    const URL_LOCAL = "http://lh-drewards-services:8888";
 
     const VERSION = "/v1";
 

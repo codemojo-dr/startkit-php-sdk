@@ -44,6 +44,7 @@ class LoyaltyService
      * @param $user_id
      * @param $transaction_value
      * @param null $platform
+     * @param null $service
      * @param null $expires_in_days
      * @param null $transaction_id
      * @param null $meta
@@ -52,12 +53,12 @@ class LoyaltyService
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      * @throws \CodeMojo\OAuth2\Exception
      */
-    public function addLoyaltyPoints($user_id, $transaction_value, $platform = null, $expires_in_days = null, $transaction_id = null, $meta = null, $frozen = false){
+    public function addLoyaltyPoints($user_id, $transaction_value, $platform = null, $service = null, $expires_in_days = null, $transaction_id = null, $meta = null, $frozen = false){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::LOYALTY_CALCULATE;
 
         $params = array(
             "customer_id" => $user_id, "value" => $transaction_value,
-            "expiry" => $expires_in_days, "platform" => $platform
+            "expiry" => $expires_in_days, "platform" => $platform, "service" => $service
         );
 
         $result = $this->authenticationService->getTransport()->fetch($url, $params,'PUT', array(), 0);
@@ -74,7 +75,8 @@ class LoyaltyService
      * @param $user_id
      * @param $transaction_value
      * @param null $platform
-     * @param null $expires_in_days
+     * @param null $service
+     * @param int|null $expires_in_days
      * @param null $transaction_id
      * @param null $meta
      * @param bool|false $frozen
@@ -82,12 +84,12 @@ class LoyaltyService
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      * @throws \CodeMojo\OAuth2\Exception
      */
-    public function calculateLoyaltyPoints($user_id, $transaction_value, $platform = null, $expires_in_days = 0, $transaction_id = null, $meta = null, $frozen = false){
+    public function calculateLoyaltyPoints($user_id, $transaction_value, $platform = null, $service = null, $expires_in_days = 0, $transaction_id = null, $meta = null, $frozen = false){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::LOYALTY_CALCULATE;
 
         $params = array(
             "customer_id" => $user_id, "value" => $transaction_value,
-            "expiry" => $expires_in_days, "platform" => $platform
+            "expiry" => $expires_in_days, "platform" => $platform, "service" => $service
         );
 
         $result = $this->authenticationService->getTransport()->fetch($url, $params,'GET', array(), 0);
@@ -104,15 +106,16 @@ class LoyaltyService
      * @param $user_id
      * @param $transaction_value
      * @param null $platform
+     * @param null $service
      * @return null
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      * @throws \CodeMojo\OAuth2\Exception
      */
-    public function maximumRedemption($user_id, $transaction_value, $platform = null){
+    public function maximumRedemption($user_id, $transaction_value, $platform = null, $service = null){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::REDEMPTION_CALCULATE;
 
         $params = array(
-            "customer_id" => $user_id, "transaction" => $transaction_value, "platform" => $platform
+            "customer_id" => $user_id, "transaction" => $transaction_value, "platform" => $platform, "service" => $service
         );
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'GET');
@@ -142,17 +145,19 @@ class LoyaltyService
      * @param $redemption_value
      * @param $transaction_value
      * @param null $platform
+     * @param null $service
      * @param null $meta
      * @return bool|null
      * @throws \CodeMojo\Client\Exceptions\BalanceExhaustedException
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      * @throws \CodeMojo\OAuth2\Exception
      */
-    public function redeem($user_id, $redemption_value, $transaction_value, $platform = null, $meta = null){
+    public function redeem($user_id, $redemption_value, $transaction_value, $platform = null, $service = null, $meta = null){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY;
 
         $params = array(
-            "customer_id" => $user_id, "value" => $redemption_value, "platform" => $platform, "transaction" => $transaction_value
+            "customer_id" => $user_id, "value" => $redemption_value, "platform" => $platform,
+            "service" => $service, "transaction" => $transaction_value
         );
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'DELETE',array(),0);

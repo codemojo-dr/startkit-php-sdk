@@ -58,7 +58,7 @@ class LoyaltyService
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::LOYALTY_CALCULATE;
 
         $params = array(
-            "customer_id" => $user_id, "value" => $transaction_value,
+            "customer_id" => $user_id, "transaction" => $transaction_value,
             'transaction_id'=> $transaction_id ? $transaction_id : sha1('loyalty_' . $user_id . '_' . time()),
             'hold' => $frozen ? 1 : 0, 'meta' => $meta, 'tag' => $tag, "expiry" => $expires_in_days,
             "platform" => $platform, "service" => $service
@@ -82,7 +82,7 @@ class LoyaltyService
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::LOYALTY_CALCULATE;
 
         $params = array(
-            "customer_id" => $user_id, "value" => $transaction_value,
+            "customer_id" => $user_id, "transaction" => $transaction_value,
             "platform" => $platform, "service" => $service
         );
 

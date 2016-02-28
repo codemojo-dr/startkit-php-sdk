@@ -87,6 +87,7 @@ class AuthenticationService extends BaseService
     public static function instanceFromToken($token, $environment = Endpoints::ENV_SANDBOX, $callback = null ) {
         $instance = new AuthenticationService(null, null, $environment, $callback);
         $instance->storage->storeAccessToken("", "", $token, 500);
+        $instance->transport = new HttpGuzzle($instance->storage->getAccessToken(), $instance);
         return $instance;
     }
 

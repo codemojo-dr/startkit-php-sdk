@@ -3,7 +3,7 @@
 namespace CodeMojo\OAuth2\Storage;
 
 /**
- * Class PersistentStorage
+ * Class FlashStorage
  * @package DRewards\OAuth2\Storage
  */
 class FlashStorage {
@@ -34,7 +34,6 @@ class FlashStorage {
         $this->data['oauth2_access_token'] = $token;
         $this->data['oauth2_expiry'] = time() + $expiry;
         $this->data['affinity'] = sha1($id . $secret . $token . $this->data['oauth2_expiry']);
-        return file_put_contents($this->path, base64_encode(json_encode($this->data)));
     }
 
     /**
@@ -53,9 +52,7 @@ class FlashStorage {
      * @return bool
      */
     public function accessTokenMightHaveExpired($id, $secret){
-        return !isset($this->data['oauth2_expiry']) || time() > $this->data['oauth2_expiry'] ||
-        !isset($this->data['affinity']) || sha1($id . $secret . $this->data['oauth2_access_token'] . $this->data['oauth2_expiry'])
-        != $this->data['affinity'];
+        return false;
     }
 
 

@@ -161,14 +161,7 @@ class LoyaltyService
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'DELETE',array(),0);
 
-        if(isset($result['code']) && $result['code'] == 200) {
-            $value = $result['results'];
-            $value = $redemption_value >= $value ? $value : $redemption_value;
-        }else{
-            return null;
-        }
-
-        return $this->walletService->deductBalance($user_id,$value,'redemption_' . time(), $meta,'Loyalty redemption');
+        return $result['code'] == 200;
     }
 
     /**

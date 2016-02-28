@@ -6,6 +6,7 @@ namespace CodeMojo\Client\Services;
 use CodeMojo\Client\Endpoints;
 use CodeMojo\Client\Http\HttpGuzzle;
 use CodeMojo\OAuth2\Exception;
+use CodeMojo\OAuth2\Storage\FlashStorage;
 use CodeMojo\OAuth2\Storage\PersistentStorage;
 
 /**
@@ -59,9 +60,14 @@ class AuthenticationService extends BaseService
      */
     public function __construct($client_id, $client_secret, $environment = Endpoints::ENV_SANDBOX, $callback = null)
     {
-        $this->client_id = $client_id;
-        $this->client_secret = $client_secret;
-        $this->storage = new PersistentStorage();
+        if($client_id != null && $client_secret != null) {
+            $this->client_id = $client_id;
+            $this->client_secret = $client_secret;
+            $this->storage = new PersistentStorage();
+        }else {
+            $this->storage = new FlashStorage();
+        }
+
         if(empty($environment)){$environment = Endpoints::ENV_SANDBOX;}
         $this->setEnvironment($environment);
         if($this->storage->accessTokenMightHaveExpired($client_id, $client_secret)) {
@@ -69,6 +75,19 @@ class AuthenticationService extends BaseService
         }
         $this->transport = new HttpGuzzle($this->storage->getAccessToken(), $this);
         $this->callback = $callback;
+    }
+
+
+    /**
+     * @param $token
+     * @param int $environment
+     * @param null $callback
+     * @return AuthenticationService
+     */
+    public static function instanceFromToken($token, $environment = Endpoints::ENV_SANDBOX, $callback = null ) {
+        $instance = new AuthenticationService(null, null, $environment, $callback);
+        $instance->storage->storeAccessToken("", "", $token, 500);
+        return $instance;
     }
 
     /**

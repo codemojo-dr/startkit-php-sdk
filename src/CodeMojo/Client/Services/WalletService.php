@@ -139,6 +139,7 @@ class WalletService {
     /**
      * @param $user_id
      * @param $value_to_remove
+     * @param int $deduct_from
      * @param null $transaction_id
      * @param null $meta_data
      * @param null $tag
@@ -147,12 +148,13 @@ class WalletService {
      * @throws Exception
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      */
-    public function deductBalance($user_id, $value_to_remove, $transaction_id = null, $meta_data = null, $tag = null){
+    public function deductBalance($user_id, $value_to_remove, $deduct_from = -1, $transaction_id = null, $meta_data = null, $tag = null){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_WALLET . Endpoints::WALLET_CREDITS;
 
         $params = array(
             'customer_id' => $user_id, 'value'=>$value_to_remove,
-            'transaction_id'=>$transaction_id,
+            'transaction_id'=> $transaction_id,
+            'transaction_type'=> $deduct_from,
             'meta' => $meta_data, 'tag' => $tag
         );
 
@@ -204,20 +206,21 @@ class WalletService {
      * Add balance to a particular user's wallet
      * @param $user_id
      * @param $value_to_add
-     * @param null $expires_in_days
+     * @param int $transaction_type
+     * @param int|null $expires_in_days
      * @param null $transaction_id
      * @param null $meta_data
      * @param null $tag
      * @param bool|false $frozen
      * @return bool
+     * @throws Exception
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
-     * @throws \CodeMojo\OAuth2\Exception
      */
-    public function addBalance($user_id, $value_to_add, $expires_in_days = 0, $transaction_id = null, $meta_data = null, $tag = null, $frozen = false){
+    public function addBalance($user_id, $value_to_add, $transaction_type = 0, $expires_in_days = 0, $transaction_id = null, $meta_data = null, $tag = null, $frozen = false){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_WALLET . Endpoints::WALLET_CREDITS;
 
         $params = array(
-            'customer_id' => $user_id, 'value'=>$value_to_add,
+            'customer_id' => $user_id, 'value'=>$value_to_add, 'transaction_type' => $transaction_type,
             'transaction_id'=>$transaction_id, 'hold' => $frozen ? 1 : 0,
             'meta' => $meta_data, 'tag' => $tag, 'expiry' => $expires_in_days
         );

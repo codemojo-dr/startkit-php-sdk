@@ -154,7 +154,7 @@ class LoyaltyService
 
         $params = array(
             "customer_id" => $user_id, "value" => $redemption_value, "platform" => $platform,
-            "service" => $service, "transaction" => $transaction_value, 'transaction_type' => -1,
+            "service" => $service, "transaction" => $transaction_value, 'transaction_type' => $redeem_from,
             'transaction_id'=> $transaction_id ? $transaction_id : sha1('loyalty_' . $user_id . '_' . time()),
             'meta' => $meta, 'tag' => $tag
         );

@@ -29,7 +29,7 @@ class Endpoints
     const BASE_WALLET = "/services/wallet";
 
     const WALLET_CREDITS = "/credits";
-    const WALLET_CREDITS_BALANCE = "/credits/balance/%s";
+    const WALLET_CREDITS_BALANCE = "/credits/balance/%s?transaction_id=%d";
 
     const WALLET_TRANSACTIONS_ALL = "/transactions/%d";
     const WALLET_TRANSACTIONS_USER = "/transactions/%s/%d";

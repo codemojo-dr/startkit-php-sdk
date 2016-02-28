@@ -38,13 +38,14 @@ class WalletService {
     /**
      * Get the wallet balance of a user
      * @param $user_id
+     * @param int $type
      * @return float
      * @throws Exception
-     * @throws InvalidArgumentException
+     * @throws \CodeMojo\Client\Http\InvalidArgumentException
      */
-    public function getBalance($user_id){
+    public function getBalance($user_id, $type = -1){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_WALLET . Endpoints::WALLET_CREDITS_BALANCE;
-        $url = sprintf($url,$user_id);
+        $url = sprintf($url, $user_id, $type);
         $result = $this->authenticationService->getTransport()->fetch($url);
 
         if($result["code"] == 200){

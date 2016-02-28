@@ -60,21 +60,22 @@ class AuthenticationService extends BaseService
      */
     public function __construct($client_id, $client_secret, $environment = Endpoints::ENV_SANDBOX, $callback = null)
     {
+        if(empty($environment)){$environment = Endpoints::ENV_SANDBOX;}
+        $this->setEnvironment($environment);
+        $this->callback = $callback;
+
         if($client_id != null && $client_secret != null) {
             $this->client_id = $client_id;
             $this->client_secret = $client_secret;
             $this->storage = new PersistentStorage();
+
+            if($this->storage->accessTokenMightHaveExpired($client_id, $client_secret)) {
+                $this->reauthenticate();
+            }
+            $this->transport = new HttpGuzzle($this->storage->getAccessToken(), $this);
         }else {
             $this->storage = new FlashStorage();
         }
-
-        if(empty($environment)){$environment = Endpoints::ENV_SANDBOX;}
-        $this->setEnvironment($environment);
-        if($this->storage->accessTokenMightHaveExpired($client_id, $client_secret)) {
-            $this->reauthenticate();
-        }
-        $this->transport = new HttpGuzzle($this->storage->getAccessToken(), $this);
-        $this->callback = $callback;
     }
 
 

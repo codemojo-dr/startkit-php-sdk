@@ -123,6 +123,12 @@ class LoyaltyService
         }
     }
 
+    /**
+     * @param $user_id
+     * @return mixed
+     * @throws \CodeMojo\Client\Http\InvalidArgumentException
+     * @throws \CodeMojo\OAuth2\Exception
+     */
     public function getUserBrief($user_id){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::LOYALTY_SUMMARY;
         $url = sprintf($url, $user_id);

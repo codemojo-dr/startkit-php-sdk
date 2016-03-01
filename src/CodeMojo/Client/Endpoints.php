@@ -46,6 +46,13 @@ class Endpoints
     const REDEMPTION_CALCULATE = "/calculate-redemption";
 
     /*
+     * Gamification Endpoints
+     */
+    const BASE_GAMIFICATION = "/services/gamification";
+    const GAMIFICATION_CALCULATE = "";
+    const GAMIFICATION_SUMMARY = "/summary/%s";
+
+    /*
      * Meta Endpoints
      */
     const BASE_META = "/services/meta";

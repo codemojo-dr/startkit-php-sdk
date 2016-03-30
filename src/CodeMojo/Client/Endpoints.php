@@ -53,6 +53,14 @@ class Endpoints
     const GAMIFICATION_SUMMARY = "/summary/%s";
 
     /*
+     * Referral Endpoints
+     */
+    const BASE_REFERRAL = "/services/referral";
+    const REFERRAL_GENERATE = "/generate/%s";
+    const REFERRAL_USE = "/claim/%s/%s";
+    const REFERRAL_CLAIM = "/claim/%s";
+
+    /*
      * Meta Endpoints
      */
     const BASE_META = "/services/meta";

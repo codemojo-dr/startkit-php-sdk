@@ -173,6 +173,41 @@ class LoyaltyService
     /**
      * @param $transaction_id
      * @return bool
+     * @throws \CodeMojo\Client\Exceptions\ResourceNotFoundException
+     */
+    public function cancelTransaction($transaction_id){
+        return $this->getWalletService()->cancelTransaction($transaction_id);
+    }
+
+    /**
+     * @param $transaction_id
+     * @return bool
+     * @throws \CodeMojo\Client\Exceptions\ResourceNotFoundException
+     */
+    public function refund($transaction_id){
+        return $this->getWalletService()->refund($transaction_id);
+    }
+
+    public function refundPartial($transaction_id, $sku_value){
+        $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_LOYALTY . Endpoints::WALLET_TRANSACTION_REFUND;
+        $url = sprintf($url, $transaction_id);
+
+        $result = $this->authenticationService->getTransport()->fetch($url, array('value' => $sku_value), 'POST', array(), 0);
+
+        if($result["code"] == 404) {
+            throw new ResourceNotFoundException("Transaction ID not found", 0x08);
+            return false;
+        }elseif($result["code"] == 400){
+            throw new BalanceExhaustedException("Redemption value more than actual value", 0x08);
+            return false;
+        }
+
+        return $result["code"] == 200;
+    }
+
+    /**
+     * @param $transaction_id
+     * @return bool
      */
     public function unfreeze($transaction_id){
         return $this->walletService->unFreezeTransaction($transaction_id);

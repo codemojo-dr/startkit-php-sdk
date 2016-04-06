@@ -35,6 +35,7 @@ class Endpoints
     const WALLET_TRANSACTIONS_USER = "/transactions/%s/%d";
 
     const WALLET_TRANSACTION = "/transaction/%s";
+    const WALLET_TRANSACTION_REFUND = "/transaction/refund/%s";
     const WALLET_TRANSACTION_UNFREEZE = "/transaction/release";
 
     /*

@@ -279,7 +279,7 @@ class HttpGuzzle
                     return $this->callback->onInvalidData($json_decode["results"]);
             }
             if($json_decode['code'] >= 400 || $json_decode['code'] < 0){
-                return $this->callback->onError(!empty($json_decode['results']) ? $json_decode['results']: @$json_decode['message']);
+                $this->callback->onError(!empty($json_decode['results']) ? $json_decode['results']: @$json_decode['message']);
             }
         }
         curl_close($ch);

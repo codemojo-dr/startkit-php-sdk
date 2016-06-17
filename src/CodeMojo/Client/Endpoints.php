@@ -66,4 +66,10 @@ class Endpoints
      */
     const BASE_META = "/services/meta";
     const META = "";
+
+    /*
+     * DataSync Endpoints
+     */
+    const BASE_DATASYNC = "/services/data";
+    const DATASYNC_USER = "/user";
 }

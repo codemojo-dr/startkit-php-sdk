@@ -60,7 +60,7 @@ class DataSyncService {
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      * @internal param $key
      */
-    public function delete($customer_id){
+    public function deleteUserData($customer_id){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_DATASYNC . Endpoints::DATASYNC_USER;
 
         $result = $this->authenticationService->getTransport()->fetch($url,array("customer_id"=>$customer_id),'DELETE',array(),0);

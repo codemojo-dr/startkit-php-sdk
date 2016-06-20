@@ -10,6 +10,7 @@ class CustomerInfo {
     private $apple_push_id;
     private $android_push_id;
     private $windows_push_id;
+    private $gender;
 
     /**
      * @param mixed $name
@@ -59,8 +60,18 @@ class CustomerInfo {
         $this->windows_push_id = $windows_push_id;
     }
 
+    /**
+     * @param mixed $gender
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+    }
+
+
+
     function toArray(){
-        return array('name' => $this->name, 'email' => $this->email, 'phone' => $this->phone,
+        return array('name' => $this->name, 'email' => $this->email, 'phone' => $this->phone, 'gender' => $this->gender,
             'apn' => $this->apple_push_id, 'gcm' => $this->android_push_id, 'wpn' => $this->windows_push_id);
     }
 

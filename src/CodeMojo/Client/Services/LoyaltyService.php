@@ -167,6 +167,10 @@ class LoyaltyService
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'DELETE',array(),0);
 
+        if($result['code'] == 3){
+            throw new BalanceExhaustedException;
+        }
+
         return $result['code'] == 200;
     }
 

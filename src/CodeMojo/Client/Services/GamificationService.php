@@ -56,6 +56,23 @@ class GamificationService
 
         return $result['code'] == 200 ;
     }
+    
+    /**
+     * @param $user_id
+     * @param $action_id
+     * @return bool
+     */
+    public function addAchievements($user_id, $action_id){
+        $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_GAMIFICATION . Endpoints::GAMIFICATION_ACHIEVEMENTS;
+
+        $params = array(
+            "customer_id" => $user_id, "action_id" => $action_id
+        );
+
+        $result = $this->authenticationService->getTransport()->fetch($url, $params,'PUT', array(), 0);
+
+        return $result['code'] == 200 ;
+    }
 
     /**
      * @param $user_id

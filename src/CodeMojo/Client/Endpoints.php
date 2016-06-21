@@ -50,6 +50,7 @@ class Endpoints
      * Gamification Endpoints
      */
     const BASE_GAMIFICATION = "/services/gamification";
+    const GAMIFICATION_ACHIEVEMENTS = "/achievements";
     const GAMIFICATION_CALCULATE = "";
     const GAMIFICATION_SUMMARY = "/summary/%s";
 

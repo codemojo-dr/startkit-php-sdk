@@ -4,6 +4,7 @@ namespace CodeMojo\Client\Services;
 
 
 use CodeMojo\Client\Endpoints;
+use CodeMojo\Client\Exceptions\BalanceExhaustedException;
 
 /**
  * Class LoyaltyService

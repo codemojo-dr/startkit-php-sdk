@@ -136,7 +136,7 @@ class LoyaltyService
 
         $result = $this->authenticationService->getTransport()->fetch($url);
 
-        $result['results']['balance'] = $this->walletService->getBalance($user_id);
+        $result['results']['balance'] = $this->getBalance($user_id);
 
         return $result['results'];
     }
@@ -224,6 +224,7 @@ class LoyaltyService
      * @return float
      */
     public function getBalance($user_id){
-        return $this->walletService->getBalance($user_id);
+        $balance = $this->walletService->getBalance($user_id);
+        return $balance['total'];
     }
 }

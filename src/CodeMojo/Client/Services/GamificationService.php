@@ -56,17 +56,20 @@ class GamificationService
 
         return $result['code'] == 200 ;
     }
-    
+
     /**
      * @param $user_id
      * @param $action_id
+     * @param $group_id
      * @return bool
+     * @throws \CodeMojo\Client\Http\InvalidArgumentException
+     * @throws \CodeMojo\OAuth2\Exception
      */
-    public function addAchievements($user_id, $action_id){
+    public function addAchievements($user_id, $action_id, $group_id = null){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_GAMIFICATION . Endpoints::GAMIFICATION_ACHIEVEMENTS;
 
         $params = array(
-            "customer_id" => $user_id, "action_id" => $action_id
+            "customer_id" => $user_id, "action_id" => $action_id, "id" => $group_id
         );
 
         $result = $this->authenticationService->getTransport()->fetch($url, $params,'PUT', array(), 0);

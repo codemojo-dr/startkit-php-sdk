@@ -3,9 +3,6 @@
 namespace CodeMojo\Client\Services;
 
 use CodeMojo\Client\Endpoints;
-use CodeMojo\Client\Exceptions\BalanceExhaustedException;
-use CodeMojo\Client\Paginator\PaginatedResults;
-use CodeMojo\OAuth2\Exception;
 
 /**
  * Class WalletService
@@ -40,9 +37,9 @@ class MetaService {
         $result = $this->authenticationService->getTransport()->fetch($url,array("key"=>$key));
 
         if($result["code"] == 200){
-            $unwrapped = @unserialize($result['results']);
-            $value = $unwrapped === false ? $result['results'] : $unwrapped;
-            return $value;
+            $unwrapped = @json_decode($result['results']['value']);
+            $value = $unwrapped === null ? $result['results']['value'] : $unwrapped;
+            return array("value" => $value, "validity" => $result['results']['validity']);
         }else{
             return null;
         }
@@ -54,14 +51,14 @@ class MetaService {
      * @param $value
      * @return bool
      */
-    public function add($key, $value){
-
-        $serialized = @serialize($value);
-        $value = $serialized === false ? $value : $serialized;
+    public function add($key, $value, $valid_for_minutes = null){
+        if(is_object($value) || is_array($value)){
+            $value = json_encode($value);
+        }
 
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_META . Endpoints::META;
 
-        $result = $this->authenticationService->getTransport()->fetch($url,array("key"=>$key,"value"=>$value),'PUT',array(),0);
+        $result = $this->authenticationService->getTransport()->fetch($url,array("key"=>$key,"value"=>$value,"validity"=>$valid_for_minutes),'PUT',array(),0);
 
         if($result["code"] == 200){
             return true;

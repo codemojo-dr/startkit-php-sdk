@@ -267,15 +267,14 @@ class HttpGuzzle
         } else {
             $json_decode = json_decode($result, true);
             switch($json_decode['code']){
-                case -500:
+                case APIResponse::ACCESS_DENIED:
                     return $this->callback->onAuthenticationFailure();
-                case -400:
-                    return $this->callback->onTokenFailure();
-                case -100:
+                case APIResponse::SERVICE_QUOTA_EXCEEDED:
                     return $this->callback->onQuotaExceeded();
-                case -403:
+                case APIResponse::INVALID_MISSING_FIELDS:
                     return $this->callback->onFieldsMissing($json_decode["results"]);
-                case -405:
+                case APIResponse::SERVER_BAD_GATEWAY:
+                case APIResponse::SERVER_EXCEPTION:
                     return $this->callback->onInvalidData($json_decode["results"]);
             }
             if($json_decode['code'] >= 400 || $json_decode['code'] < 0){

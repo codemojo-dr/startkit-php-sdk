@@ -4,6 +4,7 @@ namespace CodeMojo\Client\Services;
 
 
 use CodeMojo\Client\Endpoints;
+use CodeMojo\Client\Http\APIResponse;
 
 /**
  * Class ReferralService
@@ -37,7 +38,7 @@ class ReferralService
 
         $result = $this->authenticationService->getTransport()->fetch($url, array(),'PUT', array(), 0);
 
-        if($result['code'] == 200){
+        if($result['code'] == APIResponse::RESPONSE_SUCCESS){
             return $result['results'];
         } else{
             return null;
@@ -57,7 +58,7 @@ class ReferralService
 
         $result = $this->authenticationService->getTransport()->fetch($url);
 
-        return $result['code'] == 200;
+        return $result['code'] == APIResponse::RESPONSE_SUCCESS;
     }
 
     /**
@@ -72,7 +73,7 @@ class ReferralService
 
         $result = $this->authenticationService->getTransport()->fetch($url, array(),'PUT', array(), 0);
 
-        return $result['code'] == 200;
+        return $result['code'] == APIResponse::RESPONSE_SUCCESS;
     }
 
 }

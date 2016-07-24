@@ -4,6 +4,7 @@ namespace CodeMojo\Client\Services;
 
 
 use CodeMojo\Client\Endpoints;
+use CodeMojo\Client\Http\APIResponse;
 
 /**
  * Class GamificationService
@@ -54,7 +55,7 @@ class GamificationService
 
         $result = $this->authenticationService->getTransport()->fetch($url, $params,'PUT', array(), 0);
 
-        return $result['code'] == 200 ;
+        return $result['code'] == APIResponse::RESPONSE_SUCCESS;
     }
 
     /**
@@ -74,7 +75,7 @@ class GamificationService
 
         $result = $this->authenticationService->getTransport()->fetch($url, $params,'PUT', array(), 0);
 
-        return $result['code'] == 200 ;
+        return $result['code'] == APIResponse::RESPONSE_SUCCESS;
     }
 
     /**

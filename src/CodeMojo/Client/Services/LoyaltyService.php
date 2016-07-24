@@ -5,6 +5,7 @@ namespace CodeMojo\Client\Services;
 
 use CodeMojo\Client\Endpoints;
 use CodeMojo\Client\Exceptions\BalanceExhaustedException;
+use CodeMojo\Client\Http\APIResponse;
 
 /**
  * Class LoyaltyService
@@ -67,7 +68,7 @@ class LoyaltyService
 
         $result = $this->authenticationService->getTransport()->fetch($url, $params,'PUT', array(), 0);
 
-        return $result['code'] == 200 ;
+        return $result['code'] == APIResponse::RESPONSE_SUCCESS;
     }
 
     /**
@@ -89,7 +90,7 @@ class LoyaltyService
 
         $result = $this->authenticationService->getTransport()->fetch($url, $params,'GET', array(), 0);
 
-        if($result['code'] == 200) {
+        if($result['code'] == APIResponse::RESPONSE_SUCCESS) {
             return $result['results'];
         }else{
             return null;
@@ -115,7 +116,7 @@ class LoyaltyService
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'GET');
 
-        if(isset($result['code']) && $result['code'] == 200) {
+        if(isset($result['code']) && $result['code'] == APIResponse::RESPONSE_SUCCESS) {
             $walletBalance = $this->getBalance($user_id);
 
             return $walletBalance >= $result['results'] ? $result['results'] : $walletBalance;
@@ -168,11 +169,11 @@ class LoyaltyService
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'DELETE',array(),0);
 
-        if($result['code'] == 3){
+        if($result['code'] == APIResponse::WALLET_BALANCE_EXHAUSTED){
             throw new BalanceExhaustedException;
         }
 
-        return $result['code'] == 200;
+        return $result['code'] == APIResponse::RESPONSE_SUCCESS;
     }
 
     /**
@@ -199,15 +200,15 @@ class LoyaltyService
 
         $result = $this->authenticationService->getTransport()->fetch($url, array('value' => $sku_value), 'POST', array(), 0);
 
-        if($result["code"] == 404) {
+        if($result["code"] == APIResponse::RESOURCE_NOT_FOUND) {
             throw new ResourceNotFoundException("Transaction ID not found", 0x08);
             return false;
-        }elseif($result["code"] == 400){
+        }elseif($result["code"] == APIResponse::WALLET_BALANCE_EXHAUSTED){
             throw new BalanceExhaustedException("Redemption value more than actual value", 0x08);
             return false;
         }
 
-        return $result["code"] == 200;
+        return $result["code"] == APIResponse::RESPONSE_SUCCESS;
     }
 
     /**

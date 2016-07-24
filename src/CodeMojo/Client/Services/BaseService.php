@@ -16,15 +16,7 @@ use InvalidArgumentException;
  */
 abstract class BaseService extends BaseConnector implements IService
 {
-
-    /**
-     * @throws Exception
-     */
-    function onTokenFailure()
-    {
-        throw new InvalidTokenException("Token invalid/expired", 0x05);
-    }
-
+    
     /**
      * @throws Exception
      */

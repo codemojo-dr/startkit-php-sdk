@@ -12,11 +12,6 @@ interface IService
     /**
      * @return mixed
      */
-    function onTokenFailure();
-
-    /**
-     * @return mixed
-     */
     function onQuotaExceeded();
 
 

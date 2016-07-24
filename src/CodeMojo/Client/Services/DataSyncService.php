@@ -4,6 +4,7 @@ namespace CodeMojo\Client\Services;
 
 use CodeMojo\Client\Endpoints;
 use CodeMojo\Client\Exceptions\BalanceExhaustedException;
+use CodeMojo\Client\Http\APIResponse;
 use CodeMojo\Client\Models\CustomerInfo;
 use CodeMojo\Client\Paginator\PaginatedResults;
 use CodeMojo\OAuth2\Exception;
@@ -45,7 +46,7 @@ class DataSyncService {
 
         $result = $this->authenticationService->getTransport()->fetch($url,array("customer_id" => $customer_id, "meta"=>$customer_info),'POST',array(),0);
 
-        if($result["code"] == 200){
+        if($result["code"] == APIResponse::RESPONSE_SUCCESS){
             return true;
         }else{
             return false;
@@ -65,7 +66,7 @@ class DataSyncService {
 
         $result = $this->authenticationService->getTransport()->fetch($url,array("customer_id"=>$customer_id),'DELETE',array(),0);
 
-        return $result["code"] == 200;
+        return $result["code"] == APIResponse::RESPONSE_SUCCESS;
     }
 
 

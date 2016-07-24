@@ -4,6 +4,7 @@ namespace CodeMojo\Client\Services;
 
 
 use CodeMojo\Client\Endpoints;
+use CodeMojo\Client\Http\APIResponse;
 use CodeMojo\Client\Http\HttpGuzzle;
 use CodeMojo\OAuth2\Exception;
 use CodeMojo\OAuth2\Storage\FlashStorage;
@@ -118,33 +119,16 @@ class AuthenticationService extends BaseService
         }
     }
 
-
-    /**
-     * @internal
-     * @throws \InvalidTokenException
-     */
-    public function onTokenFailure()
-    {
-        // Reauthenticate for a fresh token
-        if(!$this->reauthenticate()) {
-
-            // Invoke the callback for user to handle
-            if ($this->callback) {
-                call_user_func_array($this->callback, array(0x05, 'token validation failed'));
-                return;
-            }elseif($this->environment == Endpoints::ENV_LOCAL) {
-                parent::onTokenFailure();
-            }
-
-        }
-    }
-
     /**
      * @internal
      * @throws \AuthenticationException
      */
     public function onAuthenticationFailure()
     {
+
+        // Reauthenticate for a fresh token
+        $this->reauthenticate();
+
         if($this->callback){
             call_user_func_array($this->callback, array(0x07,'error in authentication'));
             return;
@@ -183,15 +167,13 @@ class AuthenticationService extends BaseService
     {
         $client = new \CodeMojo\OAuth2\Client($this->client_id, $this->client_secret);
         $result = $client->getAccessToken($this->getServerEndPoint() . Endpoints::ACCESS_TOKEN,'client_credentials',array());
-        if($result['code'] == 200) {
-            if (isset($result['result']['access_token'])) {
-                $this->storage->storeAccessToken($this->client_id, $this->client_secret, $result['result']['access_token'], $result['result']['expires_in']);
-                $this->transport = new HttpGuzzle($this->storage->getAccessToken(), $this);
-                return true;
-            }
-        }else{
-            $this->onAuthenticationFailure();
+
+        if (isset($result['result']['access_token'])) {
+            $this->storage->storeAccessToken($this->client_id, $this->client_secret, $result['result']['access_token'], $result['result']['expires_in']);
+            $this->transport = new HttpGuzzle($this->storage->getAccessToken(), $this);
+            return true;
         }
+
         return false;
     }
 

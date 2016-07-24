@@ -5,6 +5,7 @@ namespace CodeMojo\Client\Services;
 use CodeMojo\Client\Endpoints;
 use CodeMojo\Client\Exceptions\BalanceExhaustedException;
 use CodeMojo\Client\Exceptions\ResourceNotFoundException;
+use CodeMojo\Client\Http\APIResponse;
 use CodeMojo\Client\Paginator\PaginatedResults;
 use CodeMojo\OAuth2\Exception;
 
@@ -49,7 +50,7 @@ class WalletService {
         $url = sprintf($url, $user_id, $type);
         $result = $this->authenticationService->getTransport()->fetch($url);
 
-        if($result["code"] == 200){
+        if($result["code"] == APIResponse::RESPONSE_SUCCESS){
             return $result['results'];
         }else{
             return 0;
@@ -68,7 +69,7 @@ class WalletService {
         $url = sprintf($url,$transaction_id);
         $result = $this->authenticationService->getTransport()->fetch($url);
 
-        if($result["code"] == 200){
+        if($result["code"] == APIResponse::RESPONSE_SUCCESS){
             // Wrap it in a array since maskData takes an Array of Array
             $maskWrapper = array($result['results']);
             $this->maskData($maskWrapper);
@@ -99,7 +100,7 @@ class WalletService {
 
         $result = $this->authenticationService->getTransport()->fetch($url);
 
-        if($result["code"] == 200){
+        if($result["code"] == APIResponse::RESPONSE_SUCCESS){
             $this->maskData($result['results']['data']);
             $paginatedResult = new PaginatedResults($result['results'],array($this,'getTransactionDetailsForUser'),array($user_id,$count));
             return $paginatedResult;
@@ -129,7 +130,7 @@ class WalletService {
 
         $result = $this->authenticationService->getTransport()->fetch($url);
 
-        if($result["code"] == 200){
+        if($result["code"] == APIResponse::RESPONSE_SUCCESS){
             $this->maskData($result['results']['data']);
             $paginatedResult = new PaginatedResults($result['results'],array($this,'getAllTransactions'),array($count));
             return $paginatedResult;
@@ -162,7 +163,7 @@ class WalletService {
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'DELETE',array(),0);
 
-        if($result["code"] == 3){
+        if($result["code"] == APIResponse::WALLET_BALANCE_EXHAUSTED){
             throw new BalanceExhaustedException("Not enough balance", 0x08);
             return false;
         }
@@ -229,7 +230,7 @@ class WalletService {
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'PUT',array(),0);
 
-        return $result["code"] == 200;
+        return $result["code"] == APIResponse::RESPONSE_SUCCESS;
     }
 
     private function maskData(array &$data){
@@ -256,7 +257,7 @@ class WalletService {
 
         $result = $this->authenticationService->getTransport()->fetch($url, array(), 'PUT', array(), 0);
 
-        if($result["code"] == 404) {
+        if($result["code"] == APIResponse::RESOURCE_NOT_FOUND) {
             throw new ResourceNotFoundException("Transaction ID not found", 0x08);
             return false;
         }
@@ -279,15 +280,15 @@ class WalletService {
 
         $result = $this->authenticationService->getTransport()->fetch($url, array('value' => $refund_value), 'POST', array(), 0);
 
-        if($result["code"] == 404) {
+        if($result["code"] == APIResponse::RESOURCE_NOT_FOUND) {
             throw new ResourceNotFoundException("Transaction ID not found", 0x08);
             return false;
-        }elseif($result["code"] == 400){
+        }elseif($result["code"] == APIResponse::WALLET_BALANCE_EXHAUSTED){
             throw new BalanceExhaustedException("Redemption value more than actual value", 0x08);
             return false;
         }
 
-        return $result["code"] == 200;
+        return $result["code"] == APIResponse::RESPONSE_SUCCESS;
     }
 
     /**
@@ -303,12 +304,12 @@ class WalletService {
 
         $result = $this->authenticationService->getTransport()->fetch($url, array(), 'DELETE', array(), 0);
 
-        if($result["code"] == 404) {
+        if($result["code"] == APIResponse::RESOURCE_NOT_FOUND) {
             throw new ResourceNotFoundException("Transaction ID not found", 0x08);
             return false;
         }
 
-        return $result["code"] == 200;
+        return $result["code"] == APIResponse::RESPONSE_SUCCESS;
     }
 
 }

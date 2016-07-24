@@ -3,6 +3,7 @@
 namespace CodeMojo\Client\Services;
 
 use CodeMojo\Client\Endpoints;
+use CodeMojo\Client\Http\APIResponse;
 
 /**
  * Class WalletService
@@ -36,7 +37,7 @@ class MetaService {
 
         $result = $this->authenticationService->getTransport()->fetch($url,array("key"=>$key));
 
-        if($result["code"] == 200){
+        if($result["code"] == APIResponse::RESPONSE_SUCCESS){
             $unwrapped = @json_decode($result['results']['value']);
             $value = $unwrapped === null ? $result['results']['value'] : $unwrapped;
             return array("value" => $value, "validity" => $result['results']['validity']);
@@ -60,7 +61,7 @@ class MetaService {
 
         $result = $this->authenticationService->getTransport()->fetch($url,array("key"=>$key,"value"=>$value,"validity"=>$valid_for_minutes),'PUT',array(),0);
 
-        if($result["code"] == 200){
+        if($result["code"] == APIResponse::RESPONSE_SUCCESS){
             return true;
         }else{
             return false;
@@ -87,7 +88,7 @@ class MetaService {
 
         $result = $this->authenticationService->getTransport()->fetch($url,array("key"=>$key),'DELETE',array(),0);
 
-        return $result["code"] == 200;
+        return $result["code"] == APIResponse::RESPONSE_SUCCESS;
     }
 
 

@@ -168,7 +168,7 @@ class WalletService {
             return false;
         }
 
-        return $result["code"] == 200;
+        return $result["code"] == APIResponse::RESPONSE_SUCCESS;
     }
 
     /**
@@ -187,7 +187,7 @@ class WalletService {
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'POST',array(),0);
 
-        return $result["code"] == 200;
+        return $result["code"] == APIResponse::RESPONSE_SUCCESS;
 
     }
 
@@ -262,7 +262,7 @@ class WalletService {
             return false;
         }
 
-        return $result["code"] == 200;
+        return $result["code"] == APIResponse::RESPONSE_SUCCESS;
     }
 
     /**

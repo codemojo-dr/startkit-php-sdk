@@ -3,7 +3,9 @@
 namespace CodeMojo\Client\Services;
 
 use CodeMojo\Client\Endpoints;
+use CodeMojo\Client\Enums\WalletTransactionTypes;
 use CodeMojo\Client\Exceptions\BalanceExhaustedException;
+use CodeMojo\Client\Exceptions\QuotaExceededException;
 use CodeMojo\Client\Exceptions\ResourceNotFoundException;
 use CodeMojo\Client\Http\APIResponse;
 use CodeMojo\Client\Paginator\PaginatedResults;
@@ -151,7 +153,7 @@ class WalletService {
      * @throws Exception
      * @throws \CodeMojo\Client\Http\InvalidArgumentException
      */
-    public function deductBalance($user_id, $value_to_remove, $deduct_from = -1, $transaction_id = null, $meta_data = null, $tag = null){
+    public function deductBalance($user_id, $value_to_remove, $deduct_from = WalletTransactionTypes::REDEEM_COMBINED, $transaction_id = null, $meta_data = null, $tag = null){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_WALLET . Endpoints::WALLET_CREDITS;
 
         $params = array(
@@ -201,8 +203,8 @@ class WalletService {
      * @param null $tag
      * @return bool
      */
-    public function addFrozenBalance($user_id, $value_to_add, $transaction_id = null, $meta_data = null, $tag = null){
-        return $this->addBalance($user_id,$value_to_add,$transaction_id,$meta_data,$tag,true);
+    public function addFrozenBalance($user_id, $value_to_add, $transaction_type = WalletTransactionTypes::TRANSACTIONAL, $transaction_id = null, $meta_data = null, $tag = null){
+        return $this->addBalance($user_id,$value_to_add, $transaction_type, 0, $transaction_id,$meta_data,$tag,true);
     }
 
     /**
@@ -216,10 +218,9 @@ class WalletService {
      * @param null $tag
      * @param bool|false $frozen
      * @return bool
-     * @throws Exception
-     * @throws \CodeMojo\Client\Http\InvalidArgumentException
+     * @throws QuotaExceededException
      */
-    public function addBalance($user_id, $value_to_add, $transaction_type = 0, $expires_in_days = 0, $transaction_id = null, $meta_data = null, $tag = null, $frozen = false){
+    public function addBalance($user_id, $value_to_add, $transaction_type = WalletTransactionTypes::TRANSACTIONAL, $expires_in_days = 0, $transaction_id = null, $meta_data = null, $tag = null, $frozen = false){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_WALLET . Endpoints::WALLET_CREDITS;
 
         $params = array(
@@ -229,6 +230,10 @@ class WalletService {
         );
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'PUT',array(),0);
+
+        if($result["code"] == APIResponse::OVERFLOW){
+            throw new QuotaExceededException("Wallet value quota exeeded");
+        }
 
         return $result["code"] == APIResponse::RESPONSE_SUCCESS;
     }

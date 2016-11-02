@@ -7,9 +7,9 @@ class CustomerInfo {
     private $name;
     private $email;
     private $phone;
-    private $apple_push_id;
-    private $android_push_id;
-    private $windows_push_id;
+    private $apn;
+    private $gcm;
+    private $wpn;
     private $gender;
 
     /**
@@ -37,27 +37,27 @@ class CustomerInfo {
     }
 
     /**
-     * @param mixed $apple_push_id
+     * @param mixed $apn
      */
-    public function setApplePushId($apple_push_id)
+    public function setApplePushId($apn)
     {
-        $this->apple_push_id = $apple_push_id;
+        $this->apn = $apn;
     }
 
     /**
-     * @param mixed $android_push_id
+     * @param mixed $gcm
      */
-    public function setAndroidPushId($android_push_id)
+    public function setAndroidPushId($gcm)
     {
-        $this->android_push_id = $android_push_id;
+        $this->gcm = $gcm;
     }
 
     /**
-     * @param mixed $windows_push_id
+     * @param mixed $wpn
      */
-    public function setWindowsPushId($windows_push_id)
+    public function setWindowsPushId($wpn)
     {
-        $this->windows_push_id = $windows_push_id;
+        $this->wpn = $wpn;
     }
 
     /**
@@ -68,12 +68,19 @@ class CustomerInfo {
         $this->gender = $gender;
     }
 
-
-
-    function toArray(){
-        return array('name' => $this->name, 'email' => $this->email, 'phone' => $this->phone, 'gender' => $this->gender,
-            'apn' => $this->apple_push_id, 'gcm' => $this->android_push_id, 'wpn' => $this->windows_push_id);
+    function __call($name, $arguments)
+    {
+        if(str_contains($name, 'set') !== false){
+            $name = strtolower(str_replace('set', '', $name));
+            $this->$name = $arguments[0];
+        }elseif(str_contains($name, 'get') !== false){
+            $name = strtolower(str_replace('get', '', $name));
+            return $this->$name;
+        }
     }
 
+    function toArray(){
+        return get_object_vars($this);
+    }
 
 }

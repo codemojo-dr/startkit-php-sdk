@@ -73,4 +73,15 @@ class Endpoints
      */
     const BASE_DATASYNC = "/services/data";
     const DATASYNC_USER = "/user";
+
+    /*
+     * Rewards Endpoints
+     */
+    const BASE_REWARDS = "/services/rewards";
+    const REWARDS_LIST_ALL_BRANDS = "/list/all-brands/%s";
+    const REWARDS_LIST_ALL_REWARDS = "/list/all-rewards/%s";
+    const REWARDS_LIST_AVAILABLE_REWARDS = "/list/available-rewards/%s";
+    const REWARDS_GRAB = "/grab/%s/%s";
+    const REWARDS_REGION_AVAILABILITY = "/region/availability";
+
 }

@@ -272,13 +272,13 @@ class HttpGuzzle
                 case APIResponse::SERVICE_QUOTA_EXCEEDED:
                     return $this->callback->onQuotaExceeded();
                 case APIResponse::INVALID_MISSING_FIELDS:
-                    return $this->callback->onFieldsMissing($json_decode["results"]);
+                    return $this->callback->onFieldsMissing(@$json_decode["results"]);
                 case APIResponse::SERVER_BAD_GATEWAY:
                 case APIResponse::SERVER_EXCEPTION:
-                    return $this->callback->onInvalidData($json_decode["results"]);
+                    return $this->callback->onInvalidData(@$json_decode["results"]);
             }
             if($json_decode['code'] >= 400 || $json_decode['code'] < 0){
-                $this->callback->onError(!empty($json_decode['results']) ? $json_decode['results']: @$json_decode['message']);
+                $this->callback->onError(!empty($json_decode['results']) ? @$json_decode['results']: @$json_decode['message']);
             }
         }
         curl_close($ch);

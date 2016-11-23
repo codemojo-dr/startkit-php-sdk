@@ -14,40 +14,30 @@ use CodeMojo\Client\Http\APIResponse;
 class RewardsService
 {
     /**
-     * @var WalletService
-     */
-    private $walletService;
-    /**
      * @var AuthenticationService
      */
     private $authenticationService;
 
+    private $app_id;
 
     /**
      * LoyaltyService constructor.
      * @param AuthenticationService $authenticationService
-     * @param WalletService|null $walletService
+     * @param $app_id
      */
-    public function __construct(AuthenticationService $authenticationService, WalletService $walletService = null)
+    public function __construct(AuthenticationService $authenticationService, $app_id)
     {
-        $this->walletService = $walletService ? $walletService : new WalletService($authenticationService);
         $this->authenticationService = $authenticationService;
+        $this->app_id = $app_id;
     }
 
-    /**
-     * @return WalletService|null
-     */
-    public function getWalletService(){
-        return $this->walletService;
-    }
-
-    public function getAvailableRewards($user_email_phone, $app_id, $filters = array()){
+    public function getAvailableRewards($user_email_phone, $filters = array()){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_REWARDS . Endpoints::REWARDS_LIST_AVAILABLE_REWARDS;
-        $url = sprintf($url, $app_id);
+        $url = sprintf($url, $this->app_id);
 
         $params = array(
             'email' => $user_email_phone, 'phone' => $user_email_phone,
-            "lat" => @$filters['lat'], "lon" => @$filters['lon'],
+            'lat' => @$filters['lat'], 'lon' => @$filters['lon'], 'locale' => @$filters['locale'],
             'price_min' => @$filters['price_min'], 'price_max' => @$filters['price_max'],
             'category' => @$filters['category'], 'valid_till' => @$filters['valid_till'],
             'test' => @$filters['testing']
@@ -79,14 +69,15 @@ class RewardsService
         return isset($result['code']) && $result['code'] == APIResponse::RESPONSE_SUCCESS;
     }
 
-    public function grabReward($deliver_to, $app_id, $reward_id, $additional_info = array()){
+    public function grabReward($customer_id, $deliver_to, $reward_id, $additional_info = array()){
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_REWARDS . Endpoints::REWARDS_GRAB;
-        $url = sprintf($url, $app_id, $reward_id);
+        $url = sprintf($url, $this->app_id, $reward_id);
 
         $params = array(
-            "lat" => @$additional_info['lat'], "lon" => @$additional_info['lon'],
+            'customer_id' => $customer_id, 'lat' => @$additional_info['lat'], 'lon' => @$additional_info['lon'],
             "email" => $deliver_to, "phone" => $deliver_to, "age" => @$additional_info['age'],
-            "gender" => @$additional_info['gender'], 'test' => @$additional_info['testing']
+            "gender" => @$additional_info['gender'], 'test' => @$additional_info['testing'],
+            'communicate' => @$additional_info['communicate']
         );
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'POST', array(),0);

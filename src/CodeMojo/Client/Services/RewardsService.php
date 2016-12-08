@@ -40,7 +40,7 @@ class RewardsService
             'lat' => @$filters['lat'], 'lon' => @$filters['lon'], 'locale' => @$filters['locale'],
             'price_min' => @$filters['price_min'], 'price_max' => @$filters['price_max'],
             'category' => @$filters['category'], 'valid_till' => @$filters['valid_till'],
-            'test' => @$filters['testing']
+            'testing' => @$filters['testing']
         );
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'GET');
@@ -76,7 +76,7 @@ class RewardsService
         $params = array(
             'customer_id' => $customer_id, 'lat' => @$additional_info['lat'], 'lon' => @$additional_info['lon'],
             "email" => $deliver_to, "phone" => $deliver_to, "age" => @$additional_info['age'],
-            "gender" => @$additional_info['gender'], 'test' => @$additional_info['testing'],
+            "gender" => @$additional_info['gender'], 'testing' => @$additional_info['testing'],
             'communicate' => @$additional_info['communicate']
         );
 

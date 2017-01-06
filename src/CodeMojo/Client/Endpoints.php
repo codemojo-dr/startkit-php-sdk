@@ -83,5 +83,6 @@ class Endpoints
     const REWARDS_LIST_AVAILABLE_REWARDS = "/list/available-rewards/%s";
     const REWARDS_GRAB = "/grab/%s/%s";
     const REWARDS_REGION_AVAILABILITY = "/region/availability";
+    const REWARDS_SESSION = "/session/%s";
 
 }

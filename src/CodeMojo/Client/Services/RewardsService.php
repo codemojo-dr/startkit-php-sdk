@@ -91,4 +91,12 @@ class RewardsService
         return null;
     }
 
+    public function trackSession($additional_info = array()){
+        $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_REWARDS . Endpoints::REWARDS_SESSION;
+        $url = sprintf($url, $this->app_id);
+
+        $result = $this->authenticationService->getTransport()->fetch($url, $additional_info,'POST', array(),0);
+
+        return $result['code'] == APIResponse::RESPONSE_SUCCESS;
+    }
 }

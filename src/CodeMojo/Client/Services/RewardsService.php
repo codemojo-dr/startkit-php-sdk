@@ -35,13 +35,8 @@ class RewardsService
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_REWARDS . Endpoints::REWARDS_LIST_AVAILABLE_REWARDS;
         $url = sprintf($url, $this->app_id);
 
-        $params = array(
-            'email' => $user_email_phone, 'phone' => $user_email_phone,
-            'lat' => @$filters['lat'], 'lon' => @$filters['lon'], 'locale' => @$filters['locale'],
-            'price_min' => @$filters['price_min'], 'price_max' => @$filters['price_max'],
-            'category' => @$filters['category'], 'valid_till' => @$filters['valid_till'],
-            'testing' => @$filters['testing']
-        );
+        $filters['email'] = $user_email_phone; $filters['phone'] = $user_email_phone;
+        $params = $filters;
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'GET');
 
@@ -73,12 +68,9 @@ class RewardsService
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_REWARDS . Endpoints::REWARDS_GRAB;
         $url = sprintf($url, $this->app_id, $reward_id);
 
-        $params = array(
-            'customer_id' => $customer_id, 'lat' => @$additional_info['lat'], 'lon' => @$additional_info['lon'],
-            "email" => $deliver_to, "phone" => $deliver_to, "age" => @$additional_info['age'],
-            "gender" => @$additional_info['gender'], 'testing' => @$additional_info['testing'],
-            'communicate' => @$additional_info['communicate']
-        );
+        $filters['email'] = $deliver_to; $filters['phone'] = $deliver_to;
+        $filters['customer_id'] = $customer_id;
+        $params = $filters;
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'POST', array(),0);
 

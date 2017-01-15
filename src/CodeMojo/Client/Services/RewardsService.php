@@ -68,9 +68,9 @@ class RewardsService
         $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_REWARDS . Endpoints::REWARDS_GRAB;
         $url = sprintf($url, $this->app_id, $reward_id);
 
-        $filters['email'] = $deliver_to; $filters['phone'] = $deliver_to;
-        $filters['customer_id'] = $customer_id;
-        $params = $filters;
+        $additional_info['email'] = $deliver_to; $additional_info['phone'] = $deliver_to;
+        $additional_info['customer_id'] = $customer_id;
+        $params = $additional_info;
 
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'POST', array(),0);
 

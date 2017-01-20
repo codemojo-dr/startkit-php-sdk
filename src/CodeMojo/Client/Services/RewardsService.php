@@ -41,7 +41,7 @@ class RewardsService
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'GET');
 
         if(isset($result['code']) && $result['code'] == APIResponse::RESPONSE_SUCCESS) {
-            if($result['count'] > 0){
+            if(isset($result['count']) && $result['count'] > 0){
                 return $result['results'];
             } else {
                 throw new RewardsExhaustedException("No rewards available at this moment");

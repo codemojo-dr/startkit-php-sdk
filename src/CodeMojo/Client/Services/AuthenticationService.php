@@ -68,7 +68,7 @@ class AuthenticationService extends BaseService
         if($client_id != null && $client_secret != null) {
             $this->client_id = $client_id;
             $this->client_secret = $client_secret;
-            $this->storage = new PersistentStorage();
+            $this->storage = new PersistentStorage($client_id);
 
             if($this->storage->accessTokenMightHaveExpired($client_id, $client_secret)) {
                 $this->reauthenticate();

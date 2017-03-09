@@ -20,9 +20,9 @@ class PersistentStorage {
     /**
      * TokenStorage constructor.
      */
-    public function __construct()
+    public function __construct($affinity)
     {
-        $this->path = sys_get_temp_dir() . "/" . sha1("drewards_oauth_token.json");
+        $this->path = sys_get_temp_dir() . "/" . sha1($affinity . ".json");
         if(file_exists($this->path)) {
             $this->data = json_decode(base64_decode(file_get_contents($this->path)), true);
         }

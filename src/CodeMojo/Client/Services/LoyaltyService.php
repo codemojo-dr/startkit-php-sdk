@@ -117,9 +117,7 @@ class LoyaltyService
         $result = $this->authenticationService->getTransport()->fetch($url,$params,'GET');
 
         if(isset($result['code']) && $result['code'] == APIResponse::RESPONSE_SUCCESS) {
-            $walletBalance = $this->getBalance($user_id);
-
-            return $walletBalance >= $result['results'] ? $result['results'] : $walletBalance;
+            return $result['results'];
         }else{
             return null;
         }

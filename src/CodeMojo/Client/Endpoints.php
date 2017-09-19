@@ -61,6 +61,8 @@ class Endpoints
     const REFERRAL_GENERATE = "/generate/%s";
     const REFERRAL_USE = "/claim/%s/%s";
     const REFERRAL_CLAIM = "/claim/%s";
+    const REFERRAL_SIGNUP_LIST = "/list/%s";
+    const REFERRAL_SIGNUP_SALE = "/list/%s/sale";
 
     /*
      * Meta Endpoints

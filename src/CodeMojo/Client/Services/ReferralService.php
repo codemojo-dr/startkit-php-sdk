@@ -76,4 +76,29 @@ class ReferralService
         return $result['code'] == APIResponse::RESPONSE_SUCCESS;
     }
 
+    /**
+     * @param $user_id
+     * @return bool
+     */
+    public function getSignedUpUsersList($user_id){
+        $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_REFERRAL . Endpoints::REFERRAL_SIGNUP_LIST;
+        $url = sprintf($url, $user_id);
+
+        $result = $this->authenticationService->getTransport()->fetch($url);
+
+        return $result['code'] == APIResponse::RESPONSE_SUCCESS? $result['results']: false;
+    }
+
+    /**
+     * @param $user_id
+     * @return int
+     */
+    public function getSalesGeneratedByUserReferral($user_id){
+        $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_REFERRAL . Endpoints::REFERRAL_SIGNUP_SALE;
+        $url = sprintf($url, $user_id);
+
+        $result = $this->authenticationService->getTransport()->fetch($url);
+
+        return $result['code'] == APIResponse::RESPONSE_SUCCESS? $result['results']: 0;
+    }
 }

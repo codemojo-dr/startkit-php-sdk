@@ -5,6 +5,7 @@ namespace CodeMojo\Client\Services;
 
 use CodeMojo\Client\Endpoints;
 use CodeMojo\Client\Http\APIResponse;
+use CodeMojo\Client\Paginator\PaginatedResults;
 
 /**
  * Class ReferralService
@@ -78,15 +79,26 @@ class ReferralService
 
     /**
      * @param $user_id
-     * @return bool
+     * @param null $paginated_url
+     * @param int $page
+     * @return PaginatedResults
      */
-    public function getSignedUpUsersList($user_id){
-        $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_REFERRAL . Endpoints::REFERRAL_SIGNUP_LIST;
-        $url = sprintf($url, $user_id);
+    public function getSignedUpUsersList($user_id, $paginated_url = null, $page = 1){
+        if($paginated_url) {
+            $url = $paginated_url;
+        }else {
+            $url = $this->authenticationService->getServerEndPoint() . Endpoints::VERSION . Endpoints::BASE_REFERRAL . Endpoints::REFERRAL_SIGNUP_LIST;
+            $url = sprintf($url, $user_id);
+        }
 
         $result = $this->authenticationService->getTransport()->fetch($url);
 
-        return $result['code'] == APIResponse::RESPONSE_SUCCESS? $result['results']: false;
+        if($result["code"] == APIResponse::RESPONSE_SUCCESS){
+            $paginatedResult = new PaginatedResults($result['results'], array($this,'getSignedUpUsersList'), array($user_id, 10));
+            return $paginatedResult;
+        }else{
+            return new PaginatedResults(array(),null,null);
+        }
     }
 
     /**
